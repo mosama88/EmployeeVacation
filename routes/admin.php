@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard\CityController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
@@ -31,6 +32,9 @@ Route::middleware(['auth:admin', 'verified'])->name('dashboard.')->group(functio
     Route::get('/dashboard/admin', function () {
         return view('dashboard.admins.index');
     })->middleware(['auth', 'verified'])->name('admin.index');
+
+    // بداية cities
+    Route::resource('/cities', CityController::class);
 });
 
 
