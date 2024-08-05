@@ -73,7 +73,7 @@
                     </svg><span class="side-menu__label">الأعدادت العامه</span><i
                         class="angle fe fe-chevron-down"></i></a>
                 <ul class="slide-menu">
-                    <li><a class="slide-item" href="{{ url('/' . ($page = 'chart-morris')) }}">Morris Charts</a></li>
+                    <li><a class="slide-item" href="{{ route('dashboard.cities.index') }}">المدن</a></li>
                     <li><a class="slide-item" href="{{ url('/' . ($page = 'chart-flot')) }}">Flot Charts</a></li>
                     <li><a class="slide-item" href="{{ url('/' . ($page = 'chart-chartjs')) }}">ChartJS</a></li>
                     <li><a class="slide-item" href="{{ url('/' . ($page = 'chart-echart')) }}">Echart</a></li>
