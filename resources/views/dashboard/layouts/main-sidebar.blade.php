@@ -22,21 +22,21 @@
                         class="avatar-status profile-status bg-green"></span>
                 </div>
                 <div class="user-info">
-                    {{-- @if (Auth::guard('admin')->check()) --}}
+                    @if (Auth::guard('admin')->check())
                         <h4 class="font-weight-semibold mt-3 mb-0">
-                            {{-- {{ Auth::guard('admin')->user()->name }} --}}
+                            {{ Auth::guard('admin')->user()->name }}
                         </h4>
                         <span class="mb-0 text-muted">
-                            {{-- {{ Auth::guard('admin')->user()->username }} --}}
+                            {{ Auth::guard('admin')->user()->username }}
                         </span>
-                    {{-- @elseif (Auth::check()) --}}
+                    @elseif (Auth::check())
                         <h4 class="font-weight-semibold mt-3 mb-0">
-                            {{-- {{ Auth::user()->name }} --}}
+                            {{ Auth::user()->name }}
                         </h4>
                         <span class="mb-0 text-muted">
-                            {{-- {{ Auth::user()->email }} --}}
+                            {{ Auth::user()->email }}
                         </span>
-                    {{-- @endif --}}
+                    @endif
 
                 </div>
             </div>

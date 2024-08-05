@@ -15,15 +15,17 @@ use App\Http\Controllers\ProfileController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 
 
 
 
 Route::middleware(['auth:admin', 'verified'])->name('dashboard.')->group(function () {
+
+    Route::get('/', function () {
+        return view('dashboard.admins.index');
+    });
 
     // لوحة تحكم الأدمن
     Route::get('/dashboard/admin', function () {

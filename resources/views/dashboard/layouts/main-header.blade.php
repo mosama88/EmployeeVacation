@@ -283,12 +283,12 @@
                                     @if (Auth::check())
                                         <h6>{{ Auth::user()->name }}</h6>
                                         <span>{{ Auth::user()->email }}</span>
-                                    {{-- @elseif (Auth::guard('admin')->check()) --}}
+                                    @elseif (Auth::guard('admin')->check())
                                         <h6>
-                                            {{-- {{ Auth::guard('admin')->user()->name }} --}}
+                                            {{ Auth::guard('admin')->user()->name }}
                                         </h6>
                                         <span>
-                                            {{-- {{ Auth::guard('admin')->user()->username }} --}}
+                                            {{ Auth::guard('admin')->user()->username }}
                                         </span>
                                     @endif
 
@@ -303,7 +303,7 @@
                         @if (auth('web')->check())
                             <form method="POST" action="{{ route('logout.user') }}">
                             @else
-                                {{-- <form method="POST" action="{{ route('logout.admin') }}"> --}}
+                                <form method="POST" action="{{ route('logout.admin') }}">
                         @endif
                         @csrf
                         <a class="dropdown-item" href="route('logout.user')"
