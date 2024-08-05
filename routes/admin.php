@@ -19,13 +19,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard/user', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/dashboard/admin', function () {
-    return view('dashboard.admins.index');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
+
+
+Route::middleware(['auth:admin', 'verified'])->name('dashboard.')->group(function () {
+
+    // لوحة تحكم الأدمن
+    Route::get('/dashboard/admin', function () {
+        return view('dashboard.admins.index');
+    })->middleware(['auth', 'verified'])->name('admin.index');
+});
 
 
 
