@@ -77,7 +77,7 @@
                                         </h4>
                                         <p class="text-muted text-center">الدخول بواسطة Admin
                                         </p>
-                                        <form method="POST" action="{{ route('admin.login') }}">
+                                        <form method="POST" action="">
                                             @csrf
 
                                             <!-- Email Input -->
@@ -134,7 +134,7 @@
                                         <p class="text-muted text-center">الدخول بواسطة User.
                                         </p>
 
-                                        <form method="POST" action="{{ route('user.login') }}">
+                                        <form method="POST" action="{{ route('login') }}">
                                             @csrf
 
                                             <!-- Email Input -->
