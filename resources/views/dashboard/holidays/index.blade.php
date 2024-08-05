@@ -10,7 +10,6 @@
     <link href="{{ URL::asset('dashboard/assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
     <!--- sweetalert2 css -->
     <link href="{{ URL::asset('dashboard/assets/css/sweetalert2.min.css') }}" rel="stylesheet">
-
 @endsection
 @section('page-header')
     @include('dashboard.messages_alert')
@@ -31,7 +30,7 @@
                     <a class="modal-effect btn btn-outline-primary btn-block" data-effect="effect-super-scaled"
                         data-toggle="modal" href="#modaldemo8"> <i class="fas fa-plus-circle"></i> أضافة مدينة جديدة</a>
 
-                    @include('dashboard.cities.create')
+                    @include('dashboard.holidays.create')
                 </div>
             </div>
         </div>
@@ -66,12 +65,14 @@
                     @endif
                     <div class="table-responsive">
                         @if (@isset($data) && !@empty($data))
-                            <table id="example" class="table key-buttons text-md-nowrap">
+                            <table class="table text-md-nowrap" id="example2">
                                 <thead>
                                     <tr>
                                         <th class="wd-15p border-bottom-0"> #</th>
-                                        <th class="wd-15p border-bottom-0"> الحى</th>
-                                        <th class="wd-15p border-bottom-0"> المحافظة</th>
+                                        <th class="wd-15p border-bottom-0"> العطلة</th>
+                                        <th class="wd-15p border-bottom-0"> من</th>
+                                        <th class="wd-15p border-bottom-0"> الى</th>
+                                        <th class="wd-15p border-bottom-0"> عدد الأيام</th>
                                         <th class="wd-10p border-bottom-0">الأضافة بواسطة</th>
                                         <th class="wd-25p border-bottom-0">التحديث بواسطة</th>
                                         <th class="wd-25p border-bottom-0">العمليات</th>
@@ -85,7 +86,9 @@
                                         <tr>
                                             <td>{{ $i }}</td>
                                             <td>{{ $info->name }}</td>
-                                            <td>{{ $info->governorate->name }}</td>
+                                            <td>{{ $info->from }}</td>
+                                            <td>{{ $info->to }}</td>
+                                            <td></td>
                                             <td>{{ $info->createdByAdmin->name }}</td>
                                             <td>
                                                 @if ($info->updated_by > 0)
@@ -107,9 +110,9 @@
                                                     <i class="fas fa-trash-alt ml-1"></i>حذف</a>
 
                                             </td>
-                                            @include('dashboard.cities.edit')
+                                            @include('dashboard.holidays.edit')
                                         </tr>
-                                        @include('dashboard.cities.delete')
+                                        @include('dashboard.holidays.delete')
                                     @endforeach
                                 </tbody>
                             </table>
@@ -121,12 +124,6 @@
                         @endif
 
                     </div>
-                  
-
-           
-
-
-
                 </div><!-- bd -->
             </div><!-- bd -->
         </div>

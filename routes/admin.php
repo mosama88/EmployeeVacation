@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard\CityController;
+use App\Http\Controllers\Dashboard\HolidayController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
@@ -35,6 +36,11 @@ Route::middleware(['auth:admin', 'verified'])->name('dashboard.')->group(functio
 
     // بداية cities
     Route::resource('/cities', CityController::class);
+
+
+    // بداية holidays
+    Route::resource('/holidays', HolidayController::class);
+    
 });
 
 

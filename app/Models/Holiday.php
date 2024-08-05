@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Admin;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Holiday extends Model
 {
@@ -16,5 +17,17 @@ class Holiday extends Model
         'name',
         'from',
         'to',
+        'created_by',
+        'updated_by',
     ];
+
+    public function createdByAdmin()
+    {
+        return $this->belongsTo(Admin::class, 'created_by');
+    }
+
+    public function updatedByAdmin()
+    {
+        return $this->belongsTo(Admin::class, 'updated_by');
+    }
 }
