@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Dashboard;
 
 use auth;
 use App\Models\City;
+use App\Models\Governorate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Governorate;
+use App\Http\Requests\Dashboard\CityRequest;
 
 class CityController extends Controller
 {
@@ -37,6 +38,10 @@ class CityController extends Controller
     public function store(Request $request)
     {
         try {
+            $checkExists = City::select("*")->where('name', $request->name)->first();
+            if (!empty($checkExists)) {
+                return redirect()->back()->with(['error' => 'عفوآ أسم الحى موجود من قبل !']);
+            }
             DB::beginTransaction();
             $dataToInsert = new City();
             $dataToInsert['name'] = $request->name;
@@ -45,7 +50,7 @@ class CityController extends Controller
 
             $dataToInsert->save();
             DB::commit();
-            return redirect()->route('dashboard.cities.index')->with('success', 'تم أضافة المدينة بنجاح');
+            return redirect()->route('dashboard.cities.index')->with('success', 'تم أضافة الحى بنجاح');
         } catch (\Exception $ex) {
             DB::rollBack();
             return redirect()->back()->with(['error' => 'عفوا  حدث خطأ  ' . $ex->getMessage()])->withInput();
@@ -72,7 +77,7 @@ class CityController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(CityRequest $request, $id)
     {
         try {
             DB::beginTransaction();
@@ -82,7 +87,7 @@ class CityController extends Controller
             $dataToUpdate['updated_by'] = auth()->user()->id;
             $city->update($dataToUpdate);
             DB::commit();
-            return redirect()->route('dashboard.cities.index')->with('success', 'تم تعديل المدينة بنجاح');
+            return redirect()->route('dashboard.cities.index')->with('success', 'تم تعديل الحى بنجاح');
         } catch (\Exception $ex) {
             DB::rollBack();
             return redirect()->back()->with(['error' => 'عفوا  حدث خطأ  ' . $ex->getMessage()])->withInput();
@@ -99,7 +104,7 @@ class CityController extends Controller
             $dataDelete = City::findOrFail($id);
             $dataDelete->delete();
             DB::commit();
-            return redirect()->back()->with('success', 'تم حذف المدينة بنجاح');
+            return redirect()->back()->with('success', 'تم حذف الحى بنجاح');
         } catch (\Exception $ex) {
             DB::rollBack();
             return redirect()->back()->with(['error' => 'عفوا  حدث خطأ  ' . $ex->getMessage()])->withInput();

@@ -11,7 +11,7 @@
                      @csrf
                      <div class="col-md-12">
                          <div class="form-group">
-                             <label> اسم المدينة</label>
+                             <label> اسم الحى</label>
                              <input type="text" name="name" id="name" class="form-control"
                                  value="{{ old('name') }}">
                              @error('name')
@@ -39,7 +39,7 @@
                          </div>
                      </div>
                      <div class="modal-footer">
-                         <button class="btn ripple btn-primary" type="submit">تأكيد البيانات</button>
+                         <button class="btn ripple btn-primary" id="submit" type="submit">تأكيد البيانات</button>
                          <button class="btn ripple btn-secondary" data-dismiss="modal" type="button">إغلاق</button>
                      </div>
                  </form>

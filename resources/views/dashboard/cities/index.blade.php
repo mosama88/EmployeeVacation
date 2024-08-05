@@ -8,10 +8,12 @@
     <link href="{{ URL::asset('dashboard/assets/plugins/datatable/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('dashboard/assets/plugins/datatable/css/responsive.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('dashboard/assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
-
+    <!--- sweetalert2 css -->
+    <link href="{{ URL::asset('dashboard/assets/css/sweetalert2.min.css') }}" rel="stylesheet">
 @endsection
 @section('page-header')
     @include('dashboard.messages_alert')
+
 
     <!-- breadcrumb -->
     <div class="breadcrumb-header justify-content-between">
@@ -50,7 +52,17 @@
 
                     </p>
                 </div>
+
                 <div class="card-body">
+                    @if ($errors->any())
+                        @foreach ($errors->all() as $error)
+                            <div class="alert alert-outline-danger mg-b-0 my-3" role="alert">
+                                <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+                                    <span aria-hidden="true">&times;</span></button>
+                                <strong>حدث خطأ!</strong> {{ $error }}
+                            </div>
+                        @endforeach
+                    @endif
                     <div class="table-responsive">
                         @if (@isset($data) && !@empty($data))
                             <table class="table text-md-nowrap" id="example2">
@@ -84,8 +96,7 @@
                                             <td>
                                                 {{-- Edit --}}
                                                 <a class="modal-effect btn btn-outline-info btn-sm"
-                                                    data-effect="effect-scale" data-toggle="modal"
-                                                    href="#edit{{ $info->id }}"><i
+                                                    data-effect="effect-scale" data-toggle="modal" href="#edit"><i
                                                         class="fas fa-edit ml-1"></i>تعديل</a>
 
                                                 {{-- Delete --}}
@@ -142,4 +153,90 @@
     <script src="{{ URL::asset('dashboard/assets/plugins/datatable/js/responsive.bootstrap4.min.js') }}"></script>
     <!--Internal  Datatable js -->
     <script src="{{ URL::asset('dashboard/assets/js/table-data.js') }}"></script>
+    <script src="{{ URL::asset('dashboard/assets/js/projects/sweetalert2.min.js') }}"></script>
+    <script>
+        $(document).on('click', '#submit', function(e) {
+            e.preventDefault();
+
+            var name = $("#name").val();
+            var governorate_id = $("#governorate_id").val();
+
+            // التحقق من الحي
+            if (name === "") {
+                $('#modaldemo8').modal('hide'); // إخفاء الـ modal
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'تحذير',
+                    text: 'من فضلك أكتب أسم الحى',
+                    customClass: {
+                        container: 'swal2-override'
+                    }
+                }).then(() => {
+                    $('#modaldemo8').modal('show'); // إظهار الـ modal مرة أخرى
+                });
+                $("#name").focus();
+                return false;
+            }
+
+            // التحقق من المحافظة
+            if (governorate_id === "") {
+                $('#modaldemo8').modal('hide'); // إخفاء الـ modal
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'تحذير',
+                    text: 'من فضلك اختر المحافظة',
+                    customClass: {
+                        container: 'swal2-override'
+                    }
+                }).then(() => {
+                    $('#modaldemo8').modal('show'); // إظهار الـ modal مرة أخرى
+                });
+                $("#governorate_id").focus();
+                return false;
+            }
+
+            // إرسال البيانات عبر AJAX
+            $.ajax({
+                type: 'POST',
+                url: $(this).closest('form').attr('action'),
+                data: $(this).closest('form').serialize(),
+                success: function(data) {
+                    console.log(data); // عرض الاستجابة للمراجعة
+                    $('#modaldemo8').modal('hide'); // إخفاء الـ modal
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'عملية ناجحه',
+                        text: 'تم حفظ البيانات بنجاح',
+                        customClass: {
+                            container: 'swal2-override'
+                        }
+                    }).then(() => {
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1000);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText); // عرض رسالة الخطأ للمراجعة
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'خطأ',
+                        text: 'عفوا لقد حدث خطأ',
+                        customClass: {
+                            container: 'swal2-override'
+                        }
+                    }).then(() => {
+                        $('#modaldemo8').modal('show'); // إظهار الـ modal مرة أخرى
+                    });
+                }
+            });
+        });
+    </script>
+
+
+
+
+
+
+
 @endsection
