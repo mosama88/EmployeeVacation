@@ -3,7 +3,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content modal-content-demo">
             <div class="modal-header">
-                <h6 class="modal-title">أضف نيابة | إدارة جديدة</h6><button aria-label="Close" class="close"
+                <h6 class="modal-title">تعديل النيابة | الإدارة</h6><button aria-label="Close" class="close"
                     data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">

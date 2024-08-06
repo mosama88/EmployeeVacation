@@ -54,7 +54,7 @@ Route::middleware(['auth:admin', 'verified'])->name('dashboard.')->group(functio
 
     // بداية branches
     Route::resource('/jobGrades', JobGradeController::class);
-    Route::post('/check-jobGrades-name', [JobGradeController::class, 'checkjobGradeName'])->name('jobGrade.checkName');
+    Route::post('/check-jobGrades-name', [JobGradeController::class, 'checkjobGradeName'])->name('jobGrades.checkName');
 });
 
 

@@ -9,12 +9,12 @@
                     class="icon icon ion-ios-close-circle-outline tx-100 tx-danger lh-1 mg-t-20 d-inline-block"></i>
                 <h4 class="tx-danger mg-b-20">إحذر: ستقوم بحذف العملية !</h4>
 
-                <form action="{{ route('dashboard.branches.destroy', $info->id) }}" method="POST">
+                <form action="{{ route('dashboard.jobGrades.destroy', $info->id) }}" method="POST">
                     {{ method_field('delete') }}
                     {{ csrf_field() }}
                     <div class="modal-body">
                         <input type="hidden" name="id" value="{{ $info->id }}">
-                        <h5>أسم النيابة</h5>
+                        <h5>أسم الدرجه الوظيفية</h5>
                         <h5 class="text-primary">{{ $info->name }}</h5>
                     </div>
                     <div class="modal-footer mx-auto">

@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.master')
-@section('title', 'النيابات والأدارات')
+@section('title', 'الدرجات الوظيفية')
 @section('css')
     <!--Internal  Datetimepicker-slider css -->
     <link href="{{ URL::asset('dashboard/assets/plugins/amazeui-datetimepicker/css/amazeui.datetimepicker.css') }}"
@@ -28,20 +28,19 @@
     <div class="breadcrumb-header justify-content-between">
         <div class="my-auto">
             <div class="d-flex">
-                <h4 class="content-title mb-0 my-auto">النيابات والأدارات</h4><span
-                    class="text-muted mt-1 tx-13 mr-2 mb-0">/
+                <h4 class="content-title mb-0 my-auto">الدرجات الوظيفية</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/
                     جدول
-                    النيابات والأدارات</span>
+                    الدرجات الوظيفية</span>
             </div>
         </div>
         <div class="d-flex my-xl-auto right-content">
             <div class="mb-3 mb-xl-0">
                 <div class="btn-group dropdown">
                     <a class="modal-effect btn btn-outline-primary btn-block" data-effect="effect-super-scaled"
-                        data-toggle="modal" href="#modaldemo8"> <i class="fas fa-plus-circle"></i> أضافة النيابات | أدارة
+                        data-toggle="modal" href="#modaldemo8"> <i class="fas fa-plus-circle"></i> أضافة درجه وظيفية
                         جديدة</a>
 
-                    @include('dashboard.branches.create')
+                    @include('dashboard.jobGrades.create')
                 </div>
             </div>
         </div>
@@ -56,7 +55,7 @@
             <div class="card">
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
-                        <h4 class="card-title mg-b-0">جدول النيابات والأدارات</h4>
+                        <h4 class="card-title mg-b-0">جدول الدرجات الوظيفية</h4>
                         <i class="mdi mdi-dots-horizontal text-gray"></i>
                     </div>
                     <p class="tx-12 tx-gray-500 mb-2">
@@ -80,8 +79,7 @@
                                 <thead>
                                     <tr>
                                         <th class="wd-15p border-bottom-0"> #</th>
-                                        <th class="wd-15p border-bottom-0"> أسم النيابة | الأدارة</th>
-                                        <th class="wd-15p border-bottom-0"> المحافظة</th>
+                                        <th class="wd-15p border-bottom-0"> أسم الدرجة الوظيفية</th>
                                         <th class="wd-10p border-bottom-0">الأضافة بواسطة</th>
                                         <th class="wd-25p border-bottom-0">التحديث بواسطة</th>
                                         <th class="wd-25p border-bottom-0">العمليات</th>
@@ -95,7 +93,6 @@
                                         <tr>
                                             <td>{{ $i }}</td>
                                             <td>{{ $info->name }}</td>
-                                            <td>{{ $info->governorate->name }}</td>
                                             <td>{{ $info->createdByAdmin->name }}</td>
                                             <td>
                                                 @if ($info->updated_by > 0)
@@ -118,9 +115,9 @@
                                                     <i class="fas fa-trash-alt ml-1"></i>حذف</a>
 
                                             </td>
-                                            @include('dashboard.branches.edit')
+                                            @include('dashboard.jobGrades.edit')
                                         </tr>
-                                        @include('dashboard.branches.delete')
+                                        @include('dashboard.jobGrades.delete')
                                     @endforeach
                                 </tbody>
                             </table>
@@ -190,20 +187,19 @@
 
 
     <script>
-        $(document).on('click', '#submit_branch', function(e) {
+        $(document).on('click', '#submit_jobGrades', function(e) {
             e.preventDefault();
-
+    
             var name = $("#name").val();
-            var governorate_id = $("#governorate_id").val();
-            var form = $(this).closest('form'); // احفظ مرجع إلى النموذج
-
+            var form = $(this).closest('form'); // Reference to the form
+    
             // التحقق من الحي
             if (name === "") {
                 $('#modaldemo8').modal('hide');
                 Swal.fire({
                     icon: 'warning',
                     title: 'تحذير',
-                    text: 'من فضلك أكتب أسم النيابة أو الأدارة',
+                    text: 'من فضلك أكتب أسم الدرجه الوظيفية',
                     customClass: {
                         container: 'swal2-override'
                     }
@@ -213,41 +209,23 @@
                 $("#name").focus();
                 return false;
             }
-
-            // التحقق من المحافظة
-            if (governorate_id === "") {
-                $('#modaldemo8').modal('hide');
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'تحذير',
-                    text: 'من فضلك اختر المحافظة',
-                    customClass: {
-                        container: 'swal2-override'
-                    }
-                }).then(() => {
-                    $('#modaldemo8').modal('show');
-                });
-                $("#governorate_id").focus();
-                return false;
-            }
-
+    
             // التحقق من وجود الاسم باستخدام AJAX قبل الإرسال
             $.ajax({
                 type: 'POST',
-                url: '{{ route('dashboard.branches.checkName') }}',
+                url: '{{ route('dashboard.jobGrades.checkName') }}',
                 data: {
                     name: name,
-                    governorate_id: governorate_id,
                     _token: '{{ csrf_token() }}'
                 },
                 success: function(response) {
                     if (response.exists) {
                         $('#modaldemo8').modal('hide'); // إخفاء الـ modal
-
+    
                         Swal.fire({
                             icon: 'warning',
                             title: 'تحذير',
-                            text: 'اسم النيابة أو الادارة موجود من قبل في نفس المحافظة',
+                            text: 'اسم الالدرجه الوظيفية مسجل من قبل',
                             customClass: {
                                 container: 'swal2-override'
                             }
@@ -255,12 +233,12 @@
                             $('#modaldemo8').modal('show'); // إظهار الـ modal بعد الضغط على OK
                             $("#name").focus();
                         });
-
+    
                     } else {
                         // إرسال البيانات عبر AJAX بعد التحقق
                         $.ajax({
                             type: 'POST',
-                            url: form.attr('action'), // استخدم المرجع إلى النموذج
+                            url: form.attr('action'),
                             data: form.serialize(),
                             success: function(data) {
                                 $('#modaldemo8').modal('hide');
@@ -313,7 +291,7 @@
             });
         });
     </script>
-
+    
 
 
 
