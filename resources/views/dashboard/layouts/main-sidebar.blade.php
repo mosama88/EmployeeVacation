@@ -75,14 +75,16 @@
                 <ul class="slide-menu">
                     <li><a class="slide-item" href="{{ route('dashboard.cities.index') }}">المدن</a></li>
                     <li><a class="slide-item" href="{{ route('dashboard.holidays.index') }}">العطلات الرسمية</a></li>
-                    <li><a class="slide-item" href="{{ route('dashboard.branches.index') }}">النيابات والأدارات</a></li>
+                    <li><a class="slide-item" href="{{ route('dashboard.branches.index') }}">النيابات والأدارات</a>
+                    </li>
                     <li><a class="slide-item" href="{{ route('dashboard.jobGrades.index') }}">الدرجات الوظيفية</a></li>
-                    <li><a class="slide-item" href="{{ url('/' . ($page = 'chart-sparkline')) }}">Sparkline</a></li>
+                    <li><a class="slide-item" href="{{ route('dashboard.jobCategories.index') }}">المسمى الوظيفى</a>
+                    </li>
                     <li><a class="slide-item" href="{{ url('/' . ($page = 'chart-peity')) }}">Chart-peity</a></li>
                 </ul>
             </li>
 
-            
+
 
 
 

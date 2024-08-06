@@ -1,13 +1,14 @@
 <?php
 
-use App\Http\Controllers\Dashboard\BranchController;
-use App\Http\Controllers\Dashboard\CityController;
-use App\Http\Controllers\Dashboard\HolidayController;
-use App\Http\Controllers\Dashboard\JobGradeController;
+use App\Models\JobGrade;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
-use App\Models\JobGrade;
+use App\Http\Controllers\Dashboard\CityController;
+use App\Http\Controllers\Dashboard\BranchController;
+use App\Http\Controllers\Dashboard\HolidayController;
+use App\Http\Controllers\Dashboard\JobGradeController;
+use App\Http\Controllers\Dashboard\JobCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +56,10 @@ Route::middleware(['auth:admin', 'verified'])->name('dashboard.')->group(functio
     // بداية branches
     Route::resource('/jobGrades', JobGradeController::class);
     Route::post('/check-jobGrades-name', [JobGradeController::class, 'checkjobGradeName'])->name('jobGrades.checkName');
+
+    // بداية branches
+    Route::resource('/jobCategories', JobCategoryController::class);
+    Route::post('/check-jobCategories-name', [JobCategoryController::class, 'checkjobCategoryName'])->name('jobCategories.checkName');
 });
 
 
