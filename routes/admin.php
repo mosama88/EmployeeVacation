@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard\BranchController;
 use App\Http\Controllers\Dashboard\CityController;
 use App\Http\Controllers\Dashboard\HolidayController;
 use Illuminate\Support\Facades\Route;
@@ -44,6 +45,10 @@ Route::middleware(['auth:admin', 'verified'])->name('dashboard.')->group(functio
     Route::resource('/holidays', HolidayController::class);
     Route::post('/check-holiday-name', [HolidayController::class, 'checkHolidayName'])->name('holidays.checkName');
 
+
+    // بداية branches
+    Route::resource('/branches', BranchController::class);
+    Route::post('/check-branch-name', [BranchController::class, 'checkbranchName'])->name('branches.checkName');
 });
 
 
