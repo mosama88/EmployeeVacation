@@ -42,7 +42,7 @@
 
 
                     <div class="modal-footer">
-                        <button class="btn ripple btn-primary" id="submit_branch" type="submit">تأكيد
+                        <button class="btn ripple btn-primary" id="submit_branch_edit" type="submit">تأكيد
                             البيانات</button>
                         <button class="btn ripple btn-secondary" data-dismiss="modal" type="button">إغلاق</button>
                     </div>

@@ -7,6 +7,7 @@ use App\Models\Governorate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Dashboard\BranchRequest;
 
 class BranchController extends Controller
 {
@@ -70,9 +71,29 @@ class BranchController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(BranchRequest $request,  $id)
     {
-        //
+        try {
+            $checkExists = Branch::where('name', $request->name)->first();
+
+            if(!@empty($checkExists) && $checkExists->governorate_id == $request->governorate_id ){
+                return redirect()->back()->with(['error' => 'عفوآ أسم النيابة أو الادارة موجود بالفعل فى نفس المحافظه!']);
+
+            }
+            DB::beginTransaction();
+            $branch = Branch::findOrFail($id);
+            $dataToUpdate['name'] = $request->name;
+            $dataToUpdate['governorate_id'] = $request->governorate_id;
+            $dataToUpdate['updated_by'] = auth()->user()->id;
+
+            $branch->update($dataToUpdate);
+
+            DB::commit();
+            return redirect()->route('dashboard.branches.index')->with('success', 'تم تعديل البيانات بنجاح');
+        } catch (\Exception $ex) {
+            DB::rollBack();
+            return redirect()->back()->with(['error' => 'عفوآ بقد حدث خطآ ما!' . $ex->getMessage()])->withInput();
+        }
     }
 
     /**

@@ -11,7 +11,7 @@ class BranchRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,17 @@ class BranchRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string',
+            'governorate_id' => 'required|exists:governorates,id',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'برجاء كتابة أسم النيابة أو الأدارة !',
+            'governorate_id.required' => 'برجاء أختيار المحافظة !',
+            'governorate_id.exists' => 'المحافظة غير مسجلة بسجلاتنا !',
         ];
     }
 }
