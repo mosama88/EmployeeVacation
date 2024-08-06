@@ -6,6 +6,7 @@ use App\Models\JobGrade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Dashboard\JobGradeRequest;
 
 class JobGradeController extends Controller
 {
@@ -68,12 +69,18 @@ class JobGradeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(JobGradeRequest $request, $id)
     {
         try {
+            $chechExists = JobGrade::select("*")->where("name", $request->name)->first();
+            if (!empty($chechExists)) {
+                return redirect()->back()->with(['error' => 'عفوآ أسم الدرجه الوظيفية موجود من قبل!']);
+            }
             DB::beginTransaction();
-            $jobGrades = JobGrade::findOrFail($id);
-            $jobGrades->update();
+            $JobGrades = JobGrade::findOrFail($id);
+            $dataToUpdate['name'] = $request->name;
+            $dataToUpdate['created_by'] = auth()->user()->id;
+            $JobGrades->update($dataToUpdate);
             DB::commit();
             return redirect()->route('dashboard.jobGrades.index')->with('success', 'تم تعديل الدرجه الوظيفية بنجاح');
         } catch (\Exception $ex) {
