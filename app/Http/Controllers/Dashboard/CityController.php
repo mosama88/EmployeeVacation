@@ -18,7 +18,7 @@ class CityController extends Controller
     public function index()
     {
         $other['governorates'] = Governorate::get();
-        $data = City::select("*")->orderBy('id', 'DESC')->paginate(5);
+        $data = City::select("*")->orderBy('id', 'DESC')->get();
 
         return view('dashboard.cities.index', compact('data', 'other'));
     }
@@ -38,10 +38,12 @@ class CityController extends Controller
     public function store(Request $request)
     {
         try {
-            $checkExists = City::select("*")->where('name', $request->name)->first();
-            if (!empty($checkExists)) {
-                return redirect()->back()->with(['error' => 'عفوآ أسم الحى موجود من قبل !']);
+            $checkExists = City::where('name', $request->name)->first();
+
+            if (!empty($checkExists) && $checkExists->governorate_id == $request->governorate_id) {
+                return redirect()->back()->with(['error' => 'أسم الحى موجود من قبل في نفس المحافظة!'])->withInput();
             }
+
             DB::beginTransaction();
             $dataToInsert = new City();
             $dataToInsert['name'] = $request->name;
@@ -50,12 +52,13 @@ class CityController extends Controller
 
             $dataToInsert->save();
             DB::commit();
-            return redirect()->route('dashboard.cities.index')->with('success', 'تم أضافة الحى بنجاح');
+            return response()->json(['success' => 'تم أضافة الحى بنجاح']);
         } catch (\Exception $ex) {
             DB::rollBack();
-            return redirect()->back()->with(['error' => 'عفوا  حدث خطأ  ' . $ex->getMessage()])->withInput();
+            return response()->json(['error' => 'عفوا  حدث خطأ  ' . $ex->getMessage()], 500);
         }
     }
+
 
     /**
      * Display the specified resource.
@@ -80,6 +83,12 @@ class CityController extends Controller
     public function update(CityRequest $request, $id)
     {
         try {
+            $checkExists = City::where('name', $request->name)->first();
+
+            if (!empty($checkExists) && $checkExists->governorate_id == $request->governorate_id) {
+                return redirect()->back()->with(['error' => 'أسم الحى موجود من قبل في نفس المحافظة!'])->withInput();
+            }
+
             DB::beginTransaction();
             $city = City::findOrFail($id);
             $dataToUpdate['name'] = $request->name;
@@ -109,5 +118,18 @@ class CityController extends Controller
             DB::rollBack();
             return redirect()->back()->with(['error' => 'عفوا  حدث خطأ  ' . $ex->getMessage()])->withInput();
         }
+    }
+
+
+
+    public function checkCityName(Request $request)
+    {
+        // التحقق من وجود المدينة بنفس الاسم في نفس المحافظة
+        $checkExists = City::where('name', $request->name)
+            ->where('governorate_id', $request->governorate_id)
+            ->exists();
+
+        // إرجاع الاستجابة بتنسيق JSON
+        return response()->json(['exists' => $checkExists]);
     }
 }

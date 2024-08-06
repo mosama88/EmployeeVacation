@@ -36,11 +36,12 @@ Route::middleware(['auth:admin', 'verified'])->name('dashboard.')->group(functio
 
     // بداية cities
     Route::resource('/cities', CityController::class);
+    Route::post('/check-city-name', [CityController::class, 'checkCityName'])->name('cities.checkName');
+
 
 
     // بداية holidays
     Route::resource('/holidays', HolidayController::class);
-    
 });
 
 

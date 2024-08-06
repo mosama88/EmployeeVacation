@@ -42,6 +42,9 @@
     <!-- row -->
     <div class="row">
         <!--div-->
+
+
+
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-header pb-0">
@@ -49,11 +52,8 @@
                         <h4 class="card-title mg-b-0">جدول المدن</h4>
                         <i class="mdi mdi-dots-horizontal text-gray"></i>
                     </div>
-                    <p class="tx-12 tx-gray-500 mb-2">
-
-                    </p>
+                    <p class="tx-12 tx-gray-500 mb-2"></p>
                 </div>
-
                 <div class="card-body">
                     @if ($errors->any())
                         @foreach ($errors->all() as $error)
@@ -66,14 +66,15 @@
                     @endif
                     <div class="table-responsive">
                         @if (@isset($data) && !@empty($data))
-                            <table id="example" class="table key-buttons text-md-nowrap">
+
+                            <table class="table text-md-nowrap" id="example1">
                                 <thead>
                                     <tr>
-                                        <th class="wd-15p border-bottom-0"> #</th>
-                                        <th class="wd-15p border-bottom-0"> الحى</th>
-                                        <th class="wd-15p border-bottom-0"> المحافظة</th>
-                                        <th class="wd-10p border-bottom-0">الأضافة بواسطة</th>
-                                        <th class="wd-25p border-bottom-0">التحديث بواسطة</th>
+                                        <th class="wd-15p border-bottom-0">#</th>
+                                        <th class="wd-15p border-bottom-0">الحى</th>
+                                        <th class="wd-20p border-bottom-0">المحافظة</th>
+                                        <th class="wd-15p border-bottom-0">الأضافة بواسطة</th>
+                                        <th class="wd-10p border-bottom-0">التحديث بواسطة</th>
                                         <th class="wd-25p border-bottom-0">العمليات</th>
                                     </tr>
                                 </thead>
@@ -97,8 +98,8 @@
                                             <td>
                                                 {{-- Edit --}}
                                                 <a class="modal-effect btn btn-outline-info btn-sm"
-                                                    data-effect="effect-scale" data-toggle="modal" href="#edit"><i
-                                                        class="fas fa-edit ml-1"></i>تعديل</a>
+                                                    data-effect="effect-slide-in-right" data-toggle="modal"
+                                                    href="#edit{{ $info->id }}"><i class="fas fa-edit ml-1"></i>تعديل</a>
 
                                                 {{-- Delete --}}
                                                 <a class="modal-effect btn btn-outline-danger btn-sm"
@@ -119,17 +120,12 @@
                                 <span class="alert-inner--text"><strong> عفواً :</strong> لا توجد بيانات لعرضها!</span>
                             </div>
                         @endif
-
                     </div>
-                  
-
-           
-
-
-
-                </div><!-- bd -->
-            </div><!-- bd -->
+                </div>
+            </div>
         </div>
+
+
         <!--/div-->
     </div>
     <!-- row closed -->
@@ -139,8 +135,6 @@
     <!-- main-content closed -->
 @endsection
 @section('js')
-    <!-- Internal Modal js-->
-    <script src="{{ URL::asset('dashboard/assets/js/modal.js') }}"></script>
     <!-- Internal Data tables -->
     <script src="{{ URL::asset('dashboard/assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ URL::asset('dashboard/assets/plugins/datatable/js/dataTables.dataTables.min.js') }}"></script>
@@ -161,16 +155,23 @@
     <!--Internal  Datatable js -->
     <script src="{{ URL::asset('dashboard/assets/js/table-data.js') }}"></script>
     <script src="{{ URL::asset('dashboard/assets/js/projects/sweetalert2.min.js') }}"></script>
+
+    <!-- Internal Modal js-->
+    <script src="{{ URL::asset('dashboard/assets/js/modal.js') }}"></script>
+
+
+
     <script>
         $(document).on('click', '#submit', function(e) {
             e.preventDefault();
 
             var name = $("#name").val();
             var governorate_id = $("#governorate_id").val();
+            var form = $(this).closest('form'); // احفظ مرجع إلى النموذج
 
             // التحقق من الحي
             if (name === "") {
-                $('#modaldemo8').modal('hide'); // إخفاء الـ modal
+                $('#modaldemo8').modal('hide');
                 Swal.fire({
                     icon: 'warning',
                     title: 'تحذير',
@@ -179,7 +180,7 @@
                         container: 'swal2-override'
                     }
                 }).then(() => {
-                    $('#modaldemo8').modal('show'); // إظهار الـ modal مرة أخرى
+                    $('#modaldemo8').modal('show');
                 });
                 $("#name").focus();
                 return false;
@@ -187,7 +188,7 @@
 
             // التحقق من المحافظة
             if (governorate_id === "") {
-                $('#modaldemo8').modal('hide'); // إخفاء الـ modal
+                $('#modaldemo8').modal('hide');
                 Swal.fire({
                     icon: 'warning',
                     title: 'تحذير',
@@ -196,35 +197,80 @@
                         container: 'swal2-override'
                     }
                 }).then(() => {
-                    $('#modaldemo8').modal('show'); // إظهار الـ modal مرة أخرى
+                    $('#modaldemo8').modal('show');
                 });
                 $("#governorate_id").focus();
                 return false;
             }
 
-            // إرسال البيانات عبر AJAX
+            // التحقق من وجود الاسم باستخدام AJAX قبل الإرسال
             $.ajax({
                 type: 'POST',
-                url: $(this).closest('form').attr('action'),
-                data: $(this).closest('form').serialize(),
-                success: function(data) {
-                    console.log(data); // عرض الاستجابة للمراجعة
-                    $('#modaldemo8').modal('hide'); // إخفاء الـ modal
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'عملية ناجحه',
-                        text: 'تم حفظ البيانات بنجاح',
-                        customClass: {
-                            container: 'swal2-override'
-                        }
-                    }).then(() => {
-                        setTimeout(function() {
-                            location.reload();
-                        }, 1000);
-                    });
+                url: '{{ route('dashboard.cities.checkName') }}',
+                data: {
+                    name: name,
+                    governorate_id: governorate_id,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.exists) {
+                        $('#modaldemo8').modal('hide'); // إخفاء الـ modal
+
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'تحذير',
+                            text: 'اسم الحي موجود من قبل في نفس المحافظة',
+                            customClass: {
+                                container: 'swal2-override'
+                            }
+                        }).then(() => {
+                            $('#modaldemo8').modal('show'); // إظهار الـ modal بعد الضغط على OK
+                            $("#name").focus();
+                        });
+
+                    } else {
+                        // إرسال البيانات عبر AJAX بعد التحقق
+                        $.ajax({
+                            type: 'POST',
+                            url: form.attr('action'), // استخدم المرجع إلى النموذج
+                            data: form.serialize(),
+                            success: function(data) {
+                                $('#modaldemo8').modal('hide');
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'عملية ناجحه',
+                                    text: 'تم حفظ البيانات بنجاح',
+                                    customClass: {
+                                        container: 'swal2-override'
+                                    }
+                                }).then(() => {
+                                    setTimeout(function() {
+                                        location.reload();
+                                    }, 1000);
+                                });
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("XHR response:", xhr.responseText);
+                                console.error("Status:", status);
+                                console.error("Error:", error);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'خطأ',
+                                    text: 'عفوا لقد حدث خطأ',
+                                    customClass: {
+                                        container: 'swal2-override'
+                                    }
+                                }).then(() => {
+                                    $('#modaldemo8').modal('show');
+                                });
+                            }
+                        });
+                    }
                 },
                 error: function(xhr, status, error) {
-                    console.error(xhr.responseText); // عرض رسالة الخطأ للمراجعة
+                    console.error("XHR response:", xhr.responseText);
+                    console.error("Status:", status);
+                    console.error("Error:", error);
                     Swal.fire({
                         icon: 'error',
                         title: 'خطأ',
@@ -233,12 +279,14 @@
                             container: 'swal2-override'
                         }
                     }).then(() => {
-                        $('#modaldemo8').modal('show'); // إظهار الـ modal مرة أخرى
+                        $('#modaldemo8').modal('show');
                     });
                 }
             });
         });
     </script>
+
+
 
 
 

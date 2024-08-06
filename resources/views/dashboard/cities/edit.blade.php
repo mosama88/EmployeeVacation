@@ -1,5 +1,5 @@
 <!-- Scroll modal -->
-<div class="modal" id="edit">
+<div class="modal" id="edit{{ $info->id }}">
     <div class="modal-dialog" role="document">
         <div class="modal-content modal-content-demo">
             <div class="modal-header">
