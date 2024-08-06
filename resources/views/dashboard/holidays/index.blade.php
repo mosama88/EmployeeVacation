@@ -90,14 +90,19 @@
                                 <tbody>
                                     <?php $i = 0; ?>
                                     @foreach ($data as $info)
-                                        <?php $i++; ?>
+                                        <?php $i++;
+                                        $calcDays = \Carbon\Carbon::parse($info->from)->diffInDays(\Carbon\Carbon::parse($info->to)) + 1;
+                                        ?>
 
                                         <tr>
                                             <td>{{ $i }}</td>
                                             <td>{{ $info->name }}</td>
                                             <td>{{ $info->from }}</td>
                                             <td>{{ $info->to }}</td>
-                                            <td></td>
+
+                                            <td>
+                                                {{ $calcDays }}
+                                            </td>
                                             <td>{{ $info->createdByAdmin->name }}</td>
                                             <td>
                                                 @if ($info->updated_by > 0)
