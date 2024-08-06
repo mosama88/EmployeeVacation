@@ -251,6 +251,23 @@
                 return false;
             }
 
+            // التحقق من أن تاريخ الانتهاء هو بعد أو يساوي تاريخ البدء
+            if (new Date(to) < new Date(from)) {
+                $('#modaldemo8').modal('hide'); // إخفاء الـ modal
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'تحذير',
+                    text: 'تاريخ الانتهاء يجب أن يكون بعد أو يساوي تاريخ البدء',
+                    customClass: {
+                        container: 'swal2-override'
+                    }
+                }).then(() => {
+                    $('#modaldemo8').modal('show'); // إظهار الـ modal مرة أخرى
+                });
+                $("#to").focus();
+                return false;
+            }
+
             // التحقق من وجود الاسم باستخدام AJAX قبل الإرسال
             $.ajax({
                 type: 'POST',
@@ -332,6 +349,7 @@
             });
         });
     </script>
+
 
 
 

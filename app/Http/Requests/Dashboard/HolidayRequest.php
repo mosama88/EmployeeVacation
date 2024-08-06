@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Dashboard;
 
+use Illuminate\Validation\Rule;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class HolidayRequest extends FormRequest
@@ -11,7 +13,7 @@ class HolidayRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +23,31 @@ class HolidayRequest extends FormRequest
      */
     public function rules(): array
     {
+        $holidayId = $this->route('holiday'); // Adjust according to your route parameter
+
         return [
-            //
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('holidays')->ignore($holidayId), // Exclude the current record
+            ],
+
+            'from' => 'required|date|date_format:Y-m-d',
+            'to' => 'required|date|date_format:Y-m-d|after_or_equal:from',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'برجاء كتابة اسم العطلة !',
+            'name.unique' => 'أسم العطلة موجود بالفعل !',
+            'from.required' => 'برجاء اختيار تاريخ البداية !',
+            'from.date' => 'تاريخ البداية يجب أن يكون بتاريخ صالح !',
+            'to.required' => 'برجاء اختيار تاريخ النهاية !',
+            'to.date' => 'تاريخ النهاية يجب أن يكون بتاريخ صالح !',
+            'to.after_or_equal' => 'تاريخ النهاية يجب أن يكون بعد أو يساوي تاريخ البداية !',
         ];
     }
 }
