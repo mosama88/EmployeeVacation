@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Models\JobGrade;
 use App\Models\jobCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Dashboard\JobCategoryRequest;
 
 class JobCategoryController extends Controller
 {
@@ -68,9 +68,26 @@ class JobCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(JobCategoryRequest $request, $id)
     {
-        //
+        try {
+            $chechExists = jobCategory::select("*")->where("name", $request->name)->first();
+            if (!empty($chechExists) && $chechExists->status == $request->status) {
+                return redirect()->back()->with(['error' => 'عفوآ أسم المسمى الوظيفى موجود من قبل!']);
+            }
+            DB::beginTransaction();
+            $jobCategory = jobCategory::findOrFail($id);
+            $dataToUpdate['name'] = $request->name;
+            $dataToUpdate['status'] =  $request->status;
+            $dataToUpdate['updated_by'] = auth()->user()->id;
+            $jobCategory->update($dataToUpdate);
+
+            DB::commit();
+            return redirect()->route('dashboard.jobCategories.index')->with('success', 'تم تعديل المسمى الوظيفي بنجاح');
+        } catch (\Exception $ex) {
+            DB::rollBack();
+            return redirect()->back()->with(['error' => 'عفوآ لقد حدث خطأ ما!' . $ex->getMessage()])->withInput();
+        }
     }
 
     /**
@@ -88,5 +105,13 @@ class JobCategoryController extends Controller
             DB::rollBack();
             return redirect()->back()->with(['error' => 'عفوآ لقد حدث خطأ ما!' . $ex->getMessage()])->withInput();
         }
+    }
+
+
+    public function checkjobCategoryName(Request $request)
+    {
+        $checkExists = jobCategory::where('name', $request->name)->exists();
+
+        return response()->json(['exists' => $checkExists]);
     }
 }

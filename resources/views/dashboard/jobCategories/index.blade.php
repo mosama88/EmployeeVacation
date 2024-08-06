@@ -174,20 +174,19 @@
 
 
     <script>
-        $(document).on('click', '#submit', function(e) {
+        $(document).on('click', '#submit_jobCategories', function(e) {
             e.preventDefault();
-
+    
             var name = $("#name").val();
-            var governorate_id = $("#governorate_id").val();
-            var form = $(this).closest('form'); // احفظ مرجع إلى النموذج
-
+            var form = $(this).closest('form'); // Reference to the form
+    
             // التحقق من الحي
             if (name === "") {
                 $('#modaldemo8').modal('hide');
                 Swal.fire({
                     icon: 'warning',
                     title: 'تحذير',
-                    text: 'من فضلك أكتب أسم الحى',
+                    text: 'من فضلك أكتب أسم المسمى الوظيفى',
                     customClass: {
                         container: 'swal2-override'
                     }
@@ -197,41 +196,23 @@
                 $("#name").focus();
                 return false;
             }
-
-            // التحقق من المحافظة
-            if (governorate_id === "") {
-                $('#modaldemo8').modal('hide');
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'تحذير',
-                    text: 'من فضلك اختر المحافظة',
-                    customClass: {
-                        container: 'swal2-override'
-                    }
-                }).then(() => {
-                    $('#modaldemo8').modal('show');
-                });
-                $("#governorate_id").focus();
-                return false;
-            }
-
+    
             // التحقق من وجود الاسم باستخدام AJAX قبل الإرسال
             $.ajax({
                 type: 'POST',
                 url: '{{ route('dashboard.jobCategories.checkName') }}',
                 data: {
                     name: name,
-                    governorate_id: governorate_id,
                     _token: '{{ csrf_token() }}'
                 },
                 success: function(response) {
                     if (response.exists) {
                         $('#modaldemo8').modal('hide'); // إخفاء الـ modal
-
+    
                         Swal.fire({
                             icon: 'warning',
                             title: 'تحذير',
-                            text: 'اسم الحي موجود من قبل في نفس المحافظة',
+                            text: 'اسم المسمى الوظيفى مسجل من قبل',
                             customClass: {
                                 container: 'swal2-override'
                             }
@@ -239,12 +220,12 @@
                             $('#modaldemo8').modal('show'); // إظهار الـ modal بعد الضغط على OK
                             $("#name").focus();
                         });
-
+    
                     } else {
                         // إرسال البيانات عبر AJAX بعد التحقق
                         $.ajax({
                             type: 'POST',
-                            url: form.attr('action'), // استخدم المرجع إلى النموذج
+                            url: form.attr('action'),
                             data: form.serialize(),
                             success: function(data) {
                                 $('#modaldemo8').modal('hide');
@@ -297,7 +278,6 @@
             });
         });
     </script>
-
 
 
 

@@ -225,7 +225,7 @@
                         Swal.fire({
                             icon: 'warning',
                             title: 'تحذير',
-                            text: 'اسم الالدرجه الوظيفية مسجل من قبل',
+                            text: 'اسم الدرجه الوظيفية مسجل من قبل',
                             customClass: {
                                 container: 'swal2-override'
                             }

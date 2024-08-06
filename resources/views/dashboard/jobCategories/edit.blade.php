@@ -29,8 +29,8 @@
                             <label> الحالة</label>
                             <select name="status" id="status" class="form-control">
                                 <option value="" selected>-- أختر الحالة --</option>
-                                <option @if ('status' == 1) selected @endif value="1">نشط</option>
-                                <option @if ('status' == 2) selected @endif value="2">غير نشط
+                                <option @if ($info->status == 1) selected @endif value="1">نشط</option>
+                                <option @if ($info->status == 2) selected @endif value="2">غير نشط
                                 </option>
                             </select>
                             @error('status')

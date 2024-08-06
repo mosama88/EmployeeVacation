@@ -11,7 +11,7 @@ class JobCategoryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,16 @@ class JobCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string',
+            'status' => 'required',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'برجاء كتابة أسم المسمى الوظيفى !',
+            'status.required' => 'برجاء أختيار حالة التفعيل !',
         ];
     }
 }
