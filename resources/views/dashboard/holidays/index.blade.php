@@ -1,10 +1,19 @@
 @extends('dashboard.layouts.master')
-@section('title', 'المدن')
+@section('title', 'العطلات')
 @section('css')
+    <!--Internal  Datetimepicker-slider css -->
+    <link href="{{ URL::asset('dashboard/assets/plugins/amazeui-datetimepicker/css/amazeui.datetimepicker.css') }}"
+        rel="stylesheet">
+    <link href="{{ URL::asset('dashboard/assets/plugins/jquery-simple-datetimepicker/jquery.simple-dtpicker.css') }}"
+        rel="stylesheet">
+    <link href="{{ URL::asset('dashboard/assets/plugins/pickerjs/picker.min.css') }}" rel="stylesheet">
+    <!-- Internal Spectrum-colorpicker css -->
+    <link href="{{ URL::asset('dashboard/assets/plugins/spectrum-colorpicker/spectrum.css') }}" rel="stylesheet">
     <!-- Internal Data table css -->
     <link href="{{ URL::asset('dashboard/assets/plugins/datatable/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" />
     <link href="{{ URL::asset('dashboard/assets/plugins/datatable/css/buttons.bootstrap4.min.css') }}" rel="stylesheet">
-    <link href="{{ URL::asset('dashboard/assets/plugins/datatable/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" />
+    <link href="{{ URL::asset('dashboard/assets/plugins/datatable/css/responsive.bootstrap4.min.css') }}"
+        rel="stylesheet" />
     <link href="{{ URL::asset('dashboard/assets/plugins/datatable/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('dashboard/assets/plugins/datatable/css/responsive.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('dashboard/assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
@@ -19,16 +28,16 @@
     <div class="breadcrumb-header justify-content-between">
         <div class="my-auto">
             <div class="d-flex">
-                <h4 class="content-title mb-0 my-auto">المدن</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/
+                <h4 class="content-title mb-0 my-auto">العطلات</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/
                     جدول
-                    المدن</span>
+                    العطلات</span>
             </div>
         </div>
         <div class="d-flex my-xl-auto right-content">
             <div class="mb-3 mb-xl-0">
                 <div class="btn-group dropdown">
                     <a class="modal-effect btn btn-outline-primary btn-block" data-effect="effect-super-scaled"
-                        data-toggle="modal" href="#modaldemo8"> <i class="fas fa-plus-circle"></i> أضافة مدينة جديدة</a>
+                        data-toggle="modal" href="#modaldemo8"> <i class="fas fa-plus-circle"></i> أضافة عطلة جديدة</a>
 
                     @include('dashboard.holidays.create')
                 </div>
@@ -45,7 +54,7 @@
             <div class="card">
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
-                        <h4 class="card-title mg-b-0">جدول المدن</h4>
+                        <h4 class="card-title mg-b-0">جدول العطلات</h4>
                         <i class="mdi mdi-dots-horizontal text-gray"></i>
                     </div>
                     <p class="tx-12 tx-gray-500 mb-2">
@@ -100,7 +109,8 @@
                                             <td>
                                                 {{-- Edit --}}
                                                 <a class="modal-effect btn btn-outline-info btn-sm"
-                                                    data-effect="effect-scale" data-toggle="modal" href="#edit"><i
+                                                    data-effect="effect-scale" data-toggle="modal"
+                                                    href="#edit{{ $info->id }}"><i
                                                         class="fas fa-edit ml-1"></i>تعديل</a>
 
                                                 {{-- Delete --}}
@@ -157,21 +167,46 @@
     <script src="{{ URL::asset('dashboard/assets/plugins/datatable/js/responsive.bootstrap4.min.js') }}"></script>
     <!--Internal  Datatable js -->
     <script src="{{ URL::asset('dashboard/assets/js/table-data.js') }}"></script>
+    <!--Internal  Datepicker js -->
+    <script src="{{ URL::asset('dashboard/assets/plugins/jquery-ui/ui/widgets/datepicker.js') }}"></script>
+    <!--Internal  jquery.maskedinput js -->
+    <script src="{{ URL::asset('dashboard/assets/plugins/jquery.maskedinput/jquery.maskedinput.js') }}"></script>
+    <!--Internal  spectrum-colorpicker js -->
+    <script src="{{ URL::asset('dashboard/assets/plugins/spectrum-colorpicker/spectrum.js') }}"></script>
+    <!-- Internal Select2.min js -->
+    <script src="{{ URL::asset('dashboard/assets/plugins/select2/js/select2.min.js') }}"></script>
+    <!--Internal Ion.rangeSlider.min js -->
+    <script src="{{ URL::asset('dashboard/assets/plugins/ion-rangeslider/js/ion.rangeSlider.min.js') }}"></script>
+    <!--Internal  jquery-simple-datetimepicker js -->
+    <script src="{{ URL::asset('dashboard/assets/plugins/amazeui-datetimepicker/js/amazeui.datetimepicker.min.js') }}">
+    </script>
+    <!-- Ionicons js -->
+    <script src="{{ URL::asset('dashboard/assets/plugins/jquery-simple-datetimepicker/jquery.simple-dtpicker.js') }}">
+    </script>
+    <!--Internal  pickerjs js -->
+    <script src="{{ URL::asset('dashboard/assets/plugins/pickerjs/picker.min.js') }}"></script>
+    <!-- Internal form-elements js -->
+    <script src="{{ URL::asset('dashboard/assets/js/form-elements.js') }}"></script>
     <script src="{{ URL::asset('dashboard/assets/js/projects/sweetalert2.min.js') }}"></script>
+
+
+
     <script>
-        $(document).on('click', '#submit', function(e) {
+        $(document).on('click', '#submit_holiday', function(e) {
             e.preventDefault();
 
             var name = $("#name").val();
-            var governorate_id = $("#governorate_id").val();
+            var from = $("#from").val();
+            var to = $("#to").val();
+            var form = $(this).closest('form'); // احفظ مرجع إلى النموذج
 
-            // التحقق من الحي
+            // التحقق من العطلة
             if (name === "") {
                 $('#modaldemo8').modal('hide'); // إخفاء الـ modal
                 Swal.fire({
                     icon: 'warning',
                     title: 'تحذير',
-                    text: 'من فضلك أكتب أسم الحى',
+                    text: 'من فضلك أكتب أسم العطلة',
                     customClass: {
                         container: 'swal2-override'
                     }
@@ -182,46 +217,107 @@
                 return false;
             }
 
-            // التحقق من المحافظة
-            if (governorate_id === "") {
+            // التحقق من تاريخ البدء
+            if (from === "") {
                 $('#modaldemo8').modal('hide'); // إخفاء الـ modal
                 Swal.fire({
                     icon: 'warning',
                     title: 'تحذير',
-                    text: 'من فضلك اختر المحافظة',
+                    text: 'من فضلك اختر تاريخ البدء',
                     customClass: {
                         container: 'swal2-override'
                     }
                 }).then(() => {
                     $('#modaldemo8').modal('show'); // إظهار الـ modal مرة أخرى
                 });
-                $("#governorate_id").focus();
+                $("#from").focus();
                 return false;
             }
 
-            // إرسال البيانات عبر AJAX
+            // التحقق من تاريخ الانتهاء
+            if (to === "") {
+                $('#modaldemo8').modal('hide'); // إخفاء الـ modal
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'تحذير',
+                    text: 'من فضلك اختر تاريخ الانتهاء',
+                    customClass: {
+                        container: 'swal2-override'
+                    }
+                }).then(() => {
+                    $('#modaldemo8').modal('show'); // إظهار الـ modal مرة أخرى
+                });
+                $("#to").focus();
+                return false;
+            }
+
+            // التحقق من وجود الاسم باستخدام AJAX قبل الإرسال
             $.ajax({
                 type: 'POST',
-                url: $(this).closest('form').attr('action'),
-                data: $(this).closest('form').serialize(),
-                success: function(data) {
-                    console.log(data); // عرض الاستجابة للمراجعة
-                    $('#modaldemo8').modal('hide'); // إخفاء الـ modal
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'عملية ناجحه',
-                        text: 'تم حفظ البيانات بنجاح',
-                        customClass: {
-                            container: 'swal2-override'
-                        }
-                    }).then(() => {
-                        setTimeout(function() {
-                            location.reload();
-                        }, 1000);
-                    });
+                url: '{{ route('dashboard.holidays.checkName') }}',
+                data: {
+                    name: name,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.exists) {
+                        $('#modaldemo8').modal('hide'); // إخفاء الـ modal
+
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'تحذير',
+                            text: 'اسم العطلة موجود من قبل',
+                            customClass: {
+                                container: 'swal2-override'
+                            }
+                        }).then(() => {
+                            $('#modaldemo8').modal('show'); // إظهار الـ modal بعد الضغط على OK
+                            $("#name").focus();
+                        });
+
+                    } else {
+                        // إرسال البيانات عبر AJAX بعد التحقق
+                        $.ajax({
+                            type: 'POST',
+                            url: form.attr('action'), // استخدم المرجع إلى النموذج
+                            data: form.serialize(),
+                            success: function(data) {
+                                $('#modaldemo8').modal('hide');
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'عملية ناجحه',
+                                    text: 'تم حفظ البيانات بنجاح',
+                                    customClass: {
+                                        container: 'swal2-override'
+                                    }
+                                }).then(() => {
+                                    setTimeout(function() {
+                                        location.reload();
+                                    }, 1000);
+                                });
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("XHR response:", xhr.responseText);
+                                console.error("Status:", status);
+                                console.error("Error:", error);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'خطأ',
+                                    text: 'عفوا لقد حدث خطأ',
+                                    customClass: {
+                                        container: 'swal2-override'
+                                    }
+                                }).then(() => {
+                                    $('#modaldemo8').modal('show');
+                                });
+                            }
+                        });
+                    }
                 },
                 error: function(xhr, status, error) {
-                    console.error(xhr.responseText); // عرض رسالة الخطأ للمراجعة
+                    console.error("XHR response:", xhr.responseText);
+                    console.error("Status:", status);
+                    console.error("Error:", error);
                     Swal.fire({
                         icon: 'error',
                         title: 'خطأ',
@@ -230,14 +326,12 @@
                             container: 'swal2-override'
                         }
                     }).then(() => {
-                        $('#modaldemo8').modal('show'); // إظهار الـ modal مرة أخرى
+                        $('#modaldemo8').modal('show');
                     });
                 }
             });
         });
     </script>
-
-
 
 
 

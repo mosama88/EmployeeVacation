@@ -42,6 +42,8 @@ Route::middleware(['auth:admin', 'verified'])->name('dashboard.')->group(functio
 
     // بداية holidays
     Route::resource('/holidays', HolidayController::class);
+    Route::post('/check-holiday-name', [HolidayController::class, 'checkHolidayName'])->name('holidays.checkName');
+
 });
 
 

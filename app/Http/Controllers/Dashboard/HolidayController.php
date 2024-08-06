@@ -15,7 +15,7 @@ class HolidayController extends Controller
      */
     public function index()
     {
-        $data = Holiday::select("*")->orderBy('id', 'DESC')->paginate(10);
+        $data = Holiday::select("*")->orderBy('id', 'DESC')->get();
 
         return view('dashboard.holidays.index', compact('data'));
     }
@@ -36,7 +36,7 @@ class HolidayController extends Controller
         try {
             $checkExists = Holiday::select("*")->where('name', $request->name)->first();
             if (!empty($checkExists)) {
-                return redirect()->back()->with(['error' => 'عفوآ أسم العطلة موجود من قبل !']);
+                return redirect()->back()->with(['error' => 'عفوآ أسم العطلة موجودة من قبل !']);
             }
             DB::beginTransaction();
             $dataToInsert = new Holiday();
@@ -107,4 +107,13 @@ class HolidayController extends Controller
             return redirect()->back()->with(['error' => 'عفوا  حدث خطأ  ' . $ex->getMessage()])->withInput();
         }
     }
+
+
+    public function checkHolidayName(Request $request)
+    {
+        $checkExists = Holiday::where('name', $request->name)->exists();
+
+        return response()->json(['exists' => $checkExists]);
+    }
+
 }
