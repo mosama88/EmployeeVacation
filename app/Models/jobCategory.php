@@ -16,7 +16,6 @@ class jobCategory extends Model
 
     public $fillable = [
         'name',
-        'job_grade_id',
         'status',
         'created_by',
         'updated_by',
@@ -34,8 +33,4 @@ class jobCategory extends Model
     }
 
 
-    public function jobGrade()
-    {
-        return $this->belongsTo(JobGrade::class, 'job_grade_id');
-    }
 }

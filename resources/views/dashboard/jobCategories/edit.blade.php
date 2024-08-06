@@ -23,26 +23,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label> الدرجه الوظيفية</label>
-                            <select name="job_grades" id="job_grades_edit" class="form-control">
-                                <option value="" selected>-- أختر المحافظة --</option>
-                                @if (@isset($other['job_grades']) and !@empty($other['job_grades']))
-                                    @foreach ($other['job_grades'] as $job_grade)
-                                        <option
-                                            {{ old('job_grades', $info['job_grades']) == $job_grade->id ? 'selected' : '' }}
-                                            value="{{ $job_grade->id }}">{{ $job_grade->name }}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                            @error('job_grades')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-
-
+                
                     <div class="col-md-12">
                         <div class="form-group">
                             <label> الحالة</label>

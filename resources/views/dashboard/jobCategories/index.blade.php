@@ -72,7 +72,6 @@
                                     <tr>
                                         <th class="wd-15p border-bottom-0">#</th>
                                         <th class="wd-15p border-bottom-0">المسمى الوظيفى</th>
-                                        <th class="wd-20p border-bottom-0">الدرجه الوظيفية</th>
                                         <th class="wd-20p border-bottom-0">الحالة</th>
                                         <th class="wd-15p border-bottom-0">الأضافة بواسطة</th>
                                         <th class="wd-10p border-bottom-0">التحديث بواسطة</th>
@@ -87,7 +86,6 @@
                                         <tr>
                                             <td>{{ $i }}</td>
                                             <td>{{ $info->name }}</td>
-                                            <td>{{ $info->jobGrade->name }}</td>
                                             <td>
                                                 @if ($info->status == 1)
                                                     <span class="label text-success d-flex">
