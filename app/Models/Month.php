@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Month extends Model
 {
     use HasFactory;
+
+    protected $table = "months";
+
+
+    public $fillable = [
+        'name',
+        'name_en',
+    ];
+
+
+    
 }

@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Month;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class FinanceClnPeriods extends Model
 {
@@ -42,5 +43,10 @@ class FinanceClnPeriods extends Model
     public function financeCalendars()
     {
         return $this->belongsTo(FinanceCalendar::class, 'finance_calendars_id');
+    }
+
+    public function month()
+    {
+        return $this->belongsTo(Month::class, 'month_id');
     }
 }

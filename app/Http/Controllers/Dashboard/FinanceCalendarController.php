@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use DateInterval;
 use Illuminate\Http\Request;
 use App\Models\FinanceCalendar;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\FinanceClnPeriods;
+use App\Models\Month;
+use DatePeriod;
+use DateTime;
 
 class FinanceCalendarController extends Controller
 {
@@ -29,27 +34,57 @@ class FinanceCalendarController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(Request $request)
     {
-        try {
-            DB::beginTransaction();
 
-            $financeCalendar = new FinanceCalendar();
-            $financeCalendar['finance_yr'] = $request->finance_yr;
-            $financeCalendar['finance_yr_desc'] = $request->finance_yr_desc;
-            $financeCalendar['start_date'] = $request->start_date;
-            $financeCalendar['end_date'] = $request->end_date;
-            $financeCalendar['is_open'] = 1;
-            $financeCalendar['created_by'] = auth()->user()->id;
-            $financeClnPeriod = $financeCalendar->save();
 
-            DB::commit();
-            return redirect()->route('dashboard.financeCalendars.index')->with('success', 'تم أضافة السنه المالية بنجاح');
-        } catch (\Exception $ex) {
-            DB::rollBack();
-            return redirect()->back()->with(['error' => 'عفوآ لقد حدث خطأ !' . $ex->getMessage()])->withInput();
+        $FinanceCalendar = new FinanceCalendar();
+        $FinanceCalendar->finance_yr = $request->finance_yr;
+        $FinanceCalendar->finance_yr_desc = $request->finance_yr_desc;
+        $FinanceCalendar->start_date = $request->start_date;
+        $FinanceCalendar->end_date = $request->end_date;
+        $FinanceCalendar->created_by = auth()->user()->id;
+        $FinanceCalendar->is_open = 0;
+        $financeClnPeriod = $FinanceCalendar->save();
+
+        if ($financeClnPeriod) {
+            $insertdataOfFinanceCalendar = FinanceCalendar::select('id', 'finance_yr')->where('id', $FinanceCalendar->id)->first();
+
+            $startDate = new DateTime($request->start_date);
+            $endDate = new DateTime($request->end_date);
+            $endDate->modify('first day of next month'); // To include the end date month in the period
+            $dateInterval = new DateInterval('P1M'); // P1M = Period of 1 Month
+            $datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
+
+            foreach ($datePeriod as $date) {
+                $dataMonth = [];
+                $dataMonth['finance_calendars_id'] = $insertdataOfFinanceCalendar->id;
+
+                $MonthName_en = $date->format('F'); // 'F': Full month name in English
+                $dataParentMonth = Month::select("id")->where('name_en', $MonthName_en)->first();
+                $dataMonth['month_id'] = $dataParentMonth ? $dataParentMonth->id : null;
+                $dataMonth['finance_yr'] = $insertdataOfFinanceCalendar->finance_yr;
+                $dataMonth['start_date_month'] = $date->format('Y-m-01');
+                $dataMonth['end_date_month'] = $date->format('Y-m-t');
+                $dataMonth['year_and_month'] = $date->format('Y-m');
+                $CalcnumOfDays = strtotime($dataMonth['end_date_month']) - strtotime($dataMonth['start_date_month']);
+                $dataMonth['number_of_days'] = round($CalcnumOfDays / (60 * 60 * 24)) + 1;
+                $dataMonth['updated_at'] = now();
+                $dataMonth['created_at'] = now();
+                $dataMonth['created_by'] = auth()->user()->id;
+                $dataMonth['updated_by'] = auth()->user()->id;
+                $dataMonth['start_date_fp'] = $dataMonth['start_date_month'];
+                $dataMonth['end_date_fp'] = $dataMonth['end_date_month'];
+                FinanceClnPeriods::insert($dataMonth);
+            }
         }
+        session()->flash('success', 'تم أضافة البيانات بنجاح');
+        return redirect()->route('dashboard.financeCalendars.index');
     }
+
+
+
 
     /**
      * Display the specified resource.
@@ -117,3 +152,13 @@ class FinanceCalendarController extends Controller
         return response()->json(['exists' => $checkExists]);
     }
 }
+
+        //P = Period: يشير إلى "فترة" (Period). يستخدم دائمًا في بداية سلسلة DateInterval للإشارة إلى أن ما يلي هو وصف لفترة زمنية.
+                // 1M = 1 Month: يشير إلى "شهر واحد" (1 Month).
+
+                
+// 'Y': يعيد السنة بأربع أرقام (مثل: 2024).
+// 'm': يعيد رقم الشهر برقمين (مثل: 08).
+// 'd': يعيد رقم اليوم برقمين (مثل: 07).
+
+// F: هو حرف تنسيق (Format Character) في PHP يستخدم لإخراج الاسم الكامل للشهر باللغة الإنجليزية.
