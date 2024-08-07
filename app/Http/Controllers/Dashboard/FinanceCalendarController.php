@@ -90,11 +90,15 @@ class FinanceCalendarController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
-    {
-        //
-    }
-
+  
+     public function show(Request $request, $id)
+     {
+         // استرجاع مجموعة من السجلات بناءً على finance_calendars_id
+         $finance_cln_periods = FinanceClnPeriods::where('finance_calendars_id', $id)->get();
+ 
+         // تمرير البيانات إلى العرض
+         return view("dashboard.financeCalendars.show", ['finance_cln_periods' => $finance_cln_periods]);
+     }
     /**
      * Show the form for editing the specified resource.
      */
@@ -152,6 +156,22 @@ class FinanceCalendarController extends Controller
 
         return response()->json(['exists' => $checkExists]);
     }
+
+    public function editISOpen(Request $request, $id)
+    {
+        // البحث عن السجل الحالي باستخدام المعرف (ID)
+        $finance_cln_period = FinanceClnPeriods::findOrFail($id);
+        
+        // تحديث الحالة
+        $finance_cln_period->is_open = $request->input('is_open');
+        
+        // حفظ التحديثات
+        $finance_cln_period->save();
+    
+        // إعادة التوجيه إلى الصفحة السابقة مع رسالة نجاح
+        return redirect()->back()->with('success', 'تم تعديل الشهر المالي بنجاح');
+    }
+    
 }
 
         //P = Period: يشير إلى "فترة" (Period). يستخدم دائمًا في بداية سلسلة DateInterval للإشارة إلى أن ما يلي هو وصف لفترة زمنية.

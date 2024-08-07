@@ -42,7 +42,10 @@ Route::middleware(['auth:admin', 'verified'])->name('dashboard.')->group(functio
     // بداية financeCalendars
     Route::resource('/financeCalendars', FinanceCalendarController::class);
     Route::post('/check-financeCalendars-name', [FinanceCalendarController::class, 'checkFinanceCalendarsName'])->name('financeCalendars.checkName');
+    Route::put('/financeCalendars/editISOpen/{id}', [FinanceCalendarController::class, 'editISOpen'])->name('financeCalendars.editISOpen');
 
+
+    
     // بداية cities
     Route::resource('/cities', CityController::class);
     Route::post('/check-city-name', [CityController::class, 'checkCityName'])->name('cities.checkName');

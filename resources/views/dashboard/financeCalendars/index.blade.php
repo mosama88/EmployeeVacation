@@ -104,11 +104,11 @@
                                             <td>
                                                 @if ($info->is_open == 1)
                                                     <span class="label text-success d-flex">
-                                                        <div class="dot-label bg-success ml-1"></div>{{ __('نشط') }}
+                                                        <div class="dot-label bg-success ml-1"></div>{{ __('مفتوحة') }}
                                                     </span>
                                                 @else
                                                     <span class="label text-danger d-flex">
-                                                        <div class="dot-label bg-danger ml-1"></div>{{ __('غير نشط') }}
+                                                        <div class="dot-label bg-danger ml-1"></div>{{ __('مغلقه') }}
                                                     </span>
                                                 @endif
 
@@ -122,6 +122,13 @@
                                                 @endif
                                             </td>
                                             <td>
+
+                                                {{-- Show --}}
+                                                <a class="modal-effect btn btn-outline-primary btn-sm"
+                                                    href="{{ route('dashboard.financeCalendars.show', $info->id) }}"><i
+                                                        class="far fa-eye"></i> عرض الشهور
+                                                    المالية</a>
+
                                                 {{-- Edit --}}
                                                 <a class="modal-effect btn btn-outline-info btn-sm"
                                                     data-effect="effect-scale" data-toggle="modal"
@@ -206,7 +213,7 @@
 
 
 
-  
+
 
 
 
