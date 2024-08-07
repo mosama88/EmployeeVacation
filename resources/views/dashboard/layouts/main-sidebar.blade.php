@@ -73,6 +73,7 @@
                     </svg><span class="side-menu__label">الأعدادت العامه</span><i
                         class="angle fe fe-chevron-down"></i></a>
                 <ul class="slide-menu">
+                    <li><a class="slide-item" href="{{ route('dashboard.financeCalendars.index') }}">السنوات المالية</a></li>
                     <li><a class="slide-item" href="{{ route('dashboard.cities.index') }}">الأحياء</a></li>
                     <li><a class="slide-item" href="{{ route('dashboard.holidays.index') }}">العطلات الرسمية</a></li>
                     <li><a class="slide-item" href="{{ route('dashboard.branches.index') }}">النيابات والأدارات</a>

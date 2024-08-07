@@ -9,6 +9,7 @@ use App\Http\Controllers\Dashboard\BranchController;
 use App\Http\Controllers\Dashboard\HolidayController;
 use App\Http\Controllers\Dashboard\JobGradeController;
 use App\Http\Controllers\Dashboard\JobCategoryController;
+use App\Http\Controllers\Dashboard\FinanceCalendarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,10 @@ Route::middleware(['auth:admin', 'verified'])->name('dashboard.')->group(functio
     Route::get('/dashboard/admin', function () {
         return view('dashboard.admins.index');
     })->middleware(['auth', 'verified'])->name('admin.index');
+
+    // بداية financeCalendars
+    Route::resource('/financeCalendars', FinanceCalendarController::class);
+    Route::post('/check-financeCalendars-name', [FinanceCalendarController::class, 'checkFinanceCalendarsName'])->name('financeCalendars.checkName');
 
     // بداية cities
     Route::resource('/cities', CityController::class);
