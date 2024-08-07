@@ -207,67 +207,85 @@
 
 
     <script>
-        $(document).on('click', '#submit_holiday', function(e) {
+        $(document).on('click', '#submit_financeCalendars', function(e) {
             e.preventDefault();
 
-            var name = $("#name").val();
-            var from = $("#from").val();
-            var to = $("#to").val();
+            var finance_yr = $("#finance_yr").val();
+            var finance_yr_desc = $("#finance_yr_desc").val();
+            var start_date = $("#start_date").val();
+            var end_date = $("#end_date").val();
             var form = $(this).closest('form'); // احفظ مرجع إلى النموذج
 
-            // التحقق من العطلة
-            if (name === "") {
+            // التحقق من السنه المالية
+            if (finance_yr === "") {
                 $('#modaldemo8').modal('hide'); // إخفاء الـ modal
                 Swal.fire({
                     icon: 'warning',
                     title: 'تحذير',
-                    text: 'من فضلك أكتب أسم العطلة',
+                    text: 'من فضلك أكتب السنه المالية',
                     customClass: {
                         container: 'swal2-override'
                     }
                 }).then(() => {
                     $('#modaldemo8').modal('show'); // إظهار الـ modal مرة أخرى
                 });
-                $("#name").focus();
+                $("#finance_yr").focus();
+                return false;
+            }
+
+            // التحقق من تفاصيل السنه المالية
+            if (finance_yr_desc === "") {
+                $('#modaldemo8').modal('hide'); // إخفاء الـ modal
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'تحذير',
+                    text: 'من فضلك أكتب  تفاصيل السنه المالية',
+                    customClass: {
+                        container: 'swal2-override'
+                    }
+                }).then(() => {
+                    $('#modaldemo8').modal('show'); // إظهار الـ modal مرة أخرى
+                });
+                $("#finance_yr_desc").focus();
                 return false;
             }
 
             // التحقق من تاريخ البدء
-            if (from === "") {
+            if (start_date === "") {
                 $('#modaldemo8').modal('hide'); // إخفاء الـ modal
                 Swal.fire({
                     icon: 'warning',
                     title: 'تحذير',
-                    text: 'من فضلك اختر تاريخ البدء',
+                    text: 'من فضلك اختر تاريخ بداية السنه المالية',
                     customClass: {
                         container: 'swal2-override'
                     }
                 }).then(() => {
                     $('#modaldemo8').modal('show'); // إظهار الـ modal مرة أخرى
                 });
-                $("#from").focus();
+                $("#start_date").focus();
                 return false;
             }
 
             // التحقق من تاريخ الانتهاء
-            if (to === "") {
+            if (end_date === "") {
                 $('#modaldemo8').modal('hide'); // إخفاء الـ modal
                 Swal.fire({
                     icon: 'warning',
                     title: 'تحذير',
-                    text: 'من فضلك اختر تاريخ الانتهاء',
+                    text: 'من فضلك اختر تاريخ نهاية السنه المالية',
                     customClass: {
                         container: 'swal2-override'
                     }
                 }).then(() => {
                     $('#modaldemo8').modal('show'); // إظهار الـ modal مرة أخرى
                 });
-                $("#to").focus();
+                $("#end_date").focus();
                 return false;
             }
 
             // التحقق من أن تاريخ الانتهاء هو بعد أو يساوي تاريخ البدء
-            if (new Date(to) < new Date(from)) {
+            if (new Date(end_date) < new Date(start_date)) {
                 $('#modaldemo8').modal('hide'); // إخفاء الـ modal
                 Swal.fire({
                     icon: 'warning',
@@ -279,7 +297,7 @@
                 }).then(() => {
                     $('#modaldemo8').modal('show'); // إظهار الـ modal مرة أخرى
                 });
-                $("#to").focus();
+                $("#end_date").focus();
                 return false;
             }
 
@@ -288,7 +306,7 @@
                 type: 'POST',
                 url: '{{ route('dashboard.financeCalendars.checkName') }}',
                 data: {
-                    name: name,
+                    finance_yr: finance_yr,
                     _token: '{{ csrf_token() }}'
                 },
                 success: function(response) {
@@ -298,7 +316,7 @@
                         Swal.fire({
                             icon: 'warning',
                             title: 'تحذير',
-                            text: 'اسم العطلة موجود من قبل',
+                            text: 'السنه المالية موجودة من قبل',
                             customClass: {
                                 container: 'swal2-override'
                             }

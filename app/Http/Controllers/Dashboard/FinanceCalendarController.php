@@ -70,9 +70,26 @@ class FinanceCalendarController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request,  $id)
     {
-        //
+        try {
+            DB::beginTransaction();
+
+            $financeCalendars = FinanceCalendar::findOrFail($id);
+            $financeCalendar['finance_yr'] = $request->finance_yr;
+            $financeCalendar['finance_yr_desc'] = $request->finance_yr_desc;
+            $financeCalendar['start_date'] = $request->start_date;
+            $financeCalendar['end_date'] = $request->end_date;
+            $financeCalendar['is_open'] = $request->is_open;
+            $financeCalendar['updated_by'] = auth()->user()->id;
+            $financeCalendars->update($financeCalendar);
+
+            DB::commit();
+            return redirect()->route('dashboard.financeCalendars.index')->with('success', 'تم تعديل السنه المالية بنجاح');
+        } catch (\Exception $ex) {
+            DB::rollBack();
+            return redirect()->back()->with(['error' => 'عفوآ لقد حدث خطأ !' . $ex->getMessage()])->withInput();
+        }
     }
 
     /**
@@ -90,5 +107,13 @@ class FinanceCalendarController extends Controller
             DB::rollBack();
             return redirect()->back()->with(['error' => 'عفوا  حدث خطأ  ' . $ex->getMessage()])->withInput();
         }
+    }
+
+
+    public function checkFinanceCalendarsName(Request $request)
+    {
+        $checkExists = FinanceCalendar::where('finance_yr', $request->finance_yr)->exists();
+
+        return response()->json(['exists' => $checkExists]);
     }
 }

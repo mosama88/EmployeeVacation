@@ -25,8 +25,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label> اسم السنه المالية</label>
-                            <textarea class="form-control" name="finance_yr_desc" id="finance_yr_desc" placeholder="تفاصيل" rows="3">{{ old('finance_yr', $info->finance_yr) }}
-                            </textarea>
+                            <textarea class="form-control" name="finance_yr_desc" id="finance_yr_desc" placeholder="تفاصيل" rows="3">{{ old('finance_yr_desc', $info->finance_yr_desc) }}</textarea>
 
                             @error('finance_yr_desc')
                                 <span class="text-danger">{{ $message }}</span>
