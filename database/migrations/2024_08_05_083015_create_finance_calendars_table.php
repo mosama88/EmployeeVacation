@@ -19,7 +19,6 @@ return new class extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->tinyInteger('is_open')->default(1); //غير مفعله او مفعله
-            $table->integer('com_code')->nullable();
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
             $table->timestamps();
