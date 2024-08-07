@@ -3,7 +3,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content modal-content-demo">
             <div class="modal-header">
-                <h6 class="modal-title">تعديل المدينة</h6>
+                <h6 class="modal-title">تعديل اسم الحى</h6>
                 <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
