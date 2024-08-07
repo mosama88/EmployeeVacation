@@ -113,10 +113,6 @@
                                                 @endif
 
                                             </td>
-
-                                            <td>
-                                                {{ $calcDays }}
-                                            </td>
                                             <td>{{ $info->createdByAdmin->name }}</td>
                                             <td>
                                                 @if ($info->updated_by > 0)

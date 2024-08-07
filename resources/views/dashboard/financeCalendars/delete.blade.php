@@ -15,7 +15,7 @@
                     <div class="modal-body">
                         <input type="hidden" name="id" value="{{ $info->id }}">
                         <h5>السنه المالية</h5>
-                        <h5 class="text-primary">{{ $info->name }}</h5>
+                        <h5 class="text-primary">{{ $info->finance_yr_desc }}</h5>
                     </div>
                     <div class="modal-footer mx-auto">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>

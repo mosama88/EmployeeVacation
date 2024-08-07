@@ -22,10 +22,10 @@
 
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label> اسم السنه المالية</label>
+                            <label> تفاصيل السنه المالية</label>
                             <textarea class="form-control" name="finance_yr_desc" id="finance_yr_desc" placeholder="تفاصيل" rows="3"></textarea>
 
-                            @error('name')
+                            @error('finance_yr_desc')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Controller;
-use App\Models\FinanceCalendar;
 use Illuminate\Http\Request;
+use App\Models\FinanceCalendar;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class FinanceCalendarController extends Controller
 {
@@ -30,7 +31,24 @@ class FinanceCalendarController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            DB::beginTransaction();
+
+            $financeCalendar = new FinanceCalendar();
+            $financeCalendar['finance_yr'] = $request->finance_yr;
+            $financeCalendar['finance_yr_desc'] = $request->finance_yr_desc;
+            $financeCalendar['start_date'] = $request->start_date;
+            $financeCalendar['end_date'] = $request->end_date;
+            $financeCalendar['is_open'] = 1;
+            $financeCalendar['created_by'] = auth()->user()->id;
+            $financeClnPeriod = $financeCalendar->save();
+
+            DB::commit();
+            return redirect()->route('dashboard.financeCalendars.index')->with('success', 'تم أضافة السنه المالية بنجاح');
+        } catch (\Exception $ex) {
+            DB::rollBack();
+            return redirect()->back()->with(['error' => 'عفوآ لقد حدث خطأ !' . $ex->getMessage()])->withInput();
+        }
     }
 
     /**
@@ -60,8 +78,17 @@ class FinanceCalendarController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $dataDelete = FinanceCalendar::findOrFail($id);
+            $dataDelete->delete();
+            DB::commit();
+            return redirect()->back()->with('success', 'تم حذف السنه المالية بنجاح');
+        } catch (\Exception $ex) {
+            DB::rollBack();
+            return redirect()->back()->with(['error' => 'عفوا  حدث خطأ  ' . $ex->getMessage()])->withInput();
+        }
     }
 }
