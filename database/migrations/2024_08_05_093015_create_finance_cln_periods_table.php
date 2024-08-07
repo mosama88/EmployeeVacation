@@ -7,12 +7,24 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * الشهور المالية للسنه المالية
      */
     public function up(): void
     {
         Schema::create('finance_cln_periods', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('finance_calendars_id')->references('id')->on('finance_calendars')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('finance_yr')->comment('السنة المالية');
+            $table->foreignId('month_id')->references('id')->on('months')->onDelete('cascade')->onUpdate('cascade')->comment('كود الشهر المالى');
+            $table->string('year_and_month', 10)->comment('محتاج ان اقوم بالتسجيل بالشهر و السنه و ليس باليوم');
+            $table->date('start_date_month');
+            $table->date('end_date_month');
+            $table->integer('number_of_days')->comment('عدد الايام فى الشهر');
+            $table->date('start_date_fp')->comment('بداية تاريخ البصمة');
+            $table->date('end_date_fp')->comment('نهاية تاريخ البصمة');
+            $table->integer('is_open')->default(2)->comment(' واحد = مفتوح | اثنين = معلق | ثلاثه=مؤرشف');
+            $table->foreignId('created_by')->references('id')->on('admins')->onUpdate('cascade');
+            $table->foreignId('updated_by')->nullable()->references('id')->on('admins')->onUpdate('cascade');
             $table->timestamps();
         });
     }
