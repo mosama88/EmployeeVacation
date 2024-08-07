@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use DateTime;
+use DatePeriod;
 use DateInterval;
+use App\Models\Month;
 use Illuminate\Http\Request;
 use App\Models\FinanceCalendar;
+use App\Models\FinanceClnPeriods;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\FinanceClnPeriods;
-use App\Models\Month;
-use DatePeriod;
-use DateTime;
+use App\Http\Requests\Dashboard\FinanceCalendarRequest;
 
 class FinanceCalendarController extends Controller
 {
@@ -35,7 +36,7 @@ class FinanceCalendarController extends Controller
      * Store a newly created resource in storage.
      */
 
-    public function store(Request $request)
+    public function store(FinanceCalendarRequest $request)
     {
 
 
