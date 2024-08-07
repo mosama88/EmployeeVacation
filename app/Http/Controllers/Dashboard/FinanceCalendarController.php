@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\FinanceCalendar;
 use Illuminate\Http\Request;
 
 class FinanceCalendarController extends Controller
@@ -12,7 +13,8 @@ class FinanceCalendarController extends Controller
      */
     public function index()
     {
-        return view('dashboard.financeCalendars.index');
+        $data = FinanceCalendar::select("*")->orderBy('id', 'DESC')->get();
+        return view('dashboard.financeCalendars.index', compact('data'));
     }
 
     /**
@@ -20,7 +22,7 @@ class FinanceCalendarController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.financeCalendars.create');
     }
 
     /**
@@ -34,7 +36,7 @@ class FinanceCalendarController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
         //
     }
@@ -42,9 +44,9 @@ class FinanceCalendarController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        return view('dashboard.financeCalendars.edit');
     }
 
     /**
