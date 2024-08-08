@@ -50,7 +50,7 @@
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_name">الأسم</label>
                                     <input type="text" name="name" id="employee_name" class="form-control"
-                                        placeholder="الأسم">
+                                        placeholder="الأسم" value="{{ old('name') }}">
                                     @error('name')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -59,7 +59,7 @@
                                     <label for="employee_mobile">الموبايل</label>
                                     <input type="text" name="mobile"
                                         oninput="this.value=this.value.replace(/[^0-9.]/g,'');" id="employee_mobile"
-                                        class="form-control" placeholder="الموبايل">
+                                        class="form-control" placeholder="الموبايل" value="{{ old('mobile') }}">
                                     @error('mobile')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -68,8 +68,8 @@
                                 {{-- Staies Address Input --}}
                                 <div class="form-group mb-3 col-4">
                                     <label>عنوان الاقامة </label>
-                                    <input type="text" name="address" id="employee_address" class="form-control"
-                                        value="{{ old('address') }}">
+                                    <input type="text" name="address" id="employee_address" placeholder="العنوان"
+                                        class="form-control" value="{{ old('address') }}">
                                     @error('address')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -92,7 +92,7 @@
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_email">البريد الالكترونى</label>
                                     <input type="email" name="email" id="employee_email" class="form-control"
-                                        placeholder="البريد الالكترونى">
+                                        placeholder="البريد الالكترونى" value="{{ old('email') }}">
                                     @error('email')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -100,7 +100,7 @@
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_password">كلمة المرور</label>
                                     <input type="password" name="password" id="employee_password" class="form-control"
-                                        placeholder="كلمة المرور">
+                                        placeholder="كلمة المرور" value="{{ old('password') }}">
                                     @error('password')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -108,7 +108,8 @@
 
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_birth_date">تاريخ الميلاد</label>
-                                    <input type="date" name="birth_date" id="employee_birth_date" class="form-control">
+                                    <input type="date" name="birth_date" id="employee_birth_date" class="form-control"
+                                        value="{{ old('birth_date') }}">
                                     @error('birth_date')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -116,7 +117,8 @@
 
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_hiring_date">تاريخ التعيين</label>
-                                    <input type="date" name="hiring_date" id="employee_hiring_date" class="form-control">
+                                    <input type="date" name="hiring_date" id="employee_hiring_date"
+                                        class="form-control" value="{{ old('hiring_date') }}">
                                     @error('hiring_date')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -126,7 +128,7 @@
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_start_from">تاريخ التعيين بالأدارة | النيابة</label>
                                     <input type="date" name="start_from" id="employee_start_from"
-                                        class="form-control">
+                                        class="form-control" value="{{ old('start_from') }}">
                                     @error('start_from')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -136,7 +138,7 @@
                                     <label for="employee_add_service">أضافة سنوات الخدمه</label>
                                     <input type="text" name="add_service"
                                         oninput="this.value=this.value.replace(/[^0-9.]/g,'');" id="employee_add_service"
-                                        class="form-control">
+                                        class="form-control" value="{{ old('add_service') }}">
                                     @error('add_service')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -146,7 +148,8 @@
                                     <label for="employee_years_service">عدد سنوات الخدمه</label>
                                     <input type="text" name="years_service"
                                         oninput="this.value=this.value.replace(/[^0-9.]/g,'');"
-                                        id="employee_years_service" class="form-control">
+                                        id="employee_years_service" class="form-control"
+                                        value="{{ old('years_service') }}">
                                     @error('years_service')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -156,7 +159,8 @@
                                     <label for="employee_num_vacation_days">رصيد الأجازات</label>
                                     <input type="text" name="num_vacation_days"
                                         oninput="this.value=this.value.replace(/[^0-9.]/g,'');"
-                                        id="employee_num_vacation_days" class="form-control">
+                                        id="employee_num_vacation_days" class="form-control"
+                                        value="{{ old('num_vacation_days') }}">
                                     @error('num_vacation_days')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -179,10 +183,11 @@
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_governorate_id">المحافظة التابع لها</label>
                                     <select name="governorate_id" id="employee_governorate_id" class="select2">
-                                        <option selected value="volvo">Volvo</option>
-                                        <option value="saab">Saab</option>
-                                        <option value="mercedes">Mercedes</option>
-                                        <option value="audi">Audi</option>
+                                        @foreach ($other['governorates'] as $info)
+                                            <option selected value="">-- أختر المحافظة --</option>
+                                            <option value="{{ $info->id }}">{{ $info->name }}</option>
+                                        @endforeach
+
                                     </select>
                                     @error('governorate_id')
                                         <span class="text-danger">{{ $message }}</span>
@@ -192,10 +197,11 @@
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_city_id">المنطقه التابع لها</label>
                                     <select name="city_id" id="employee_city_id" class="select2">
-                                        <option selected value="volvo">Volvo</option>
-                                        <option value="saab">Saab</option>
-                                        <option value="mercedes">Mercedes</option>
-                                        <option value="audi">Audi</option>
+                                        @foreach ($other['cities'] as $info)
+                                            <option selected value="">-- أختر الدرجه المنطقه --</option>
+                                            <option value="{{ $info->id }}">{{ $info->name }}</option>
+                                        @endforeach
+
                                     </select>
                                     @error('city_id')
                                         <span class="text-danger">{{ $message }}</span>
@@ -205,10 +211,11 @@
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_branche_id">النيابة التابع لها</label>
                                     <select name="branche_id" id="employee_branche_id" class="select2">
-                                        <option selected value="volvo">Volvo</option>
-                                        <option value="saab">Saab</option>
-                                        <option value="mercedes">Mercedes</option>
-                                        <option value="audi">Audi</option>
+                                        @foreach ($other['branches'] as $info)
+                                            <option selected value="">-- أختر النيابة --</option>
+                                            <option value="{{ $info->id }}">{{ $info->name }}</option>
+                                        @endforeach
+
                                     </select>
                                     @error('branche_id')
                                         <span class="text-danger">{{ $message }}</span>
@@ -218,10 +225,11 @@
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_job_category_id">التخصص</label>
                                     <select name="job_category_id" id="employee_job_category_id" class="select2">
-                                        <option selected value="volvo">Volvo</option>
-                                        <option value="saab">Saab</option>
-                                        <option value="mercedes">Mercedes</option>
-                                        <option value="audi">Audi</option>
+                                        @foreach ($other['job_categories'] as $info)
+                                            <option selected value="">-- أختر التخصص --</option>
+                                            <option value="{{ $info->id }}">{{ $info->name }}</option>
+                                        @endforeach
+
                                     </select>
                                     @error('job_category_id')
                                         <span class="text-danger">{{ $message }}</span>
@@ -231,10 +239,11 @@
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_job_grade_id">الدرجه الوظيفية</label>
                                     <select name="job_grade_id" id="employee_job_grade_id" class="select2">
-                                        <option selected value="volvo">Volvo</option>
-                                        <option value="saab">Saab</option>
-                                        <option value="mercedes">Mercedes</option>
-                                        <option value="audi">Audi</option>
+                                        @foreach ($other['job_grades'] as $info)
+                                            <option selected value="">-- أختر الدرجه الوظيفية --</option>
+                                            <option value="{{ $info->id }}">{{ $info->name }}</option>
+                                        @endforeach
+
                                     </select>
                                     @error('job_grade_id')
                                         <span class="text-danger">{{ $message }}</span>
@@ -243,7 +252,7 @@
 
                                 <div class="form-group mb-3 col-6">
                                     <label for="employee_notes">ملاحظات</label>
-                                    <textarea class="form-control" name="notes" id="employee_notes" placeholder="Textarea" rows="7"></textarea>
+                                    <textarea class="form-control" name="notes" id="employee_notes" placeholder="Textarea" rows="7">{{ old('notes') }}</textarea>
                                     @error('notes')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
