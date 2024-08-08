@@ -13,6 +13,7 @@ use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Dashboard\EmployeeRequest;
 
 class EmployeeController extends Controller
 {
@@ -45,7 +46,7 @@ class EmployeeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(EmployeeRequest $request)
     {
         try {
             $checkExists = Employee::select("*")->where('name', $request->name)->first();
@@ -55,7 +56,7 @@ class EmployeeController extends Controller
             DB::beginTransaction();
             $dataToInsert = new Employee();
             $dataToInsert['name'] = $request->name;
-            $dataToInsert['email'] = $request->email;
+            $dataToInsert['username'] = $request->username;
             $dataToInsert['password'] = $request->password;
             $dataToInsert['mobile'] = $request->mobile;
             $dataToInsert['hiring_date'] = $request->hiring_date;
@@ -97,7 +98,7 @@ class EmployeeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
         $other['appointments'] = Appointment::get();
         $other['governorates'] = Governorate::get();

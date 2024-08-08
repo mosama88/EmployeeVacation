@@ -39,9 +39,17 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
             'throw' => false,
+        ],
+
+        //All Image In Application
+        'upload_image' => [
+            'driver' => 'local',
+            'root' => public_path('dashboard/assets/images/uploads'),
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
         ],
 
         's3' => [

@@ -74,6 +74,7 @@
                                         <th class="wd-15p border-bottom-0"> الراحه الاسبوعيه</th>
                                         <th class="wd-15p border-bottom-0"> محافظة</th>
                                         <th class="wd-10p border-bottom-0">الأضافة بواسطة</th>
+                                        <th class="wd-25p border-bottom-0">تاريخ التعيين</th>
                                         <th class="wd-25p border-bottom-0">التحديث بواسطة</th>
                                         <th class="wd-25p border-bottom-0">العمليات</th>
                                     </tr>
@@ -88,7 +89,7 @@
                                                 @if ($info->image)
                                                     <img class="img-thumbnail rounded me-2" alt="200x200"
                                                         style="width: 80px; height:50px"
-                                                        src="{{ asset('dashboard/assets/uploads/employees/photo/' . $info->image->filename) }}"
+                                                        src="{{ asset('dashboard/assets/images/uploads/employees/' . $info->image->filename) }}"
                                                         data-holder-rendered="true">
                                                 @elseif ($info->gender == 'Male')
                                                     <img alt="Responsive image" class="img-thumbnail rounded me-2"
@@ -99,14 +100,12 @@
                                                         src="{{ asset('dashboard/assets/img/employees-female-default.png') }}">
                                                 @endif
                                             </td>
-                                            </td>
                                             <td>{{ $info->name }}</td>
                                             <td>{{ $info->mobile }}</td>
                                             <td>{{ $info->hiring_date }}</td>
                                             <td>{{ $info->num_vacation_days }}</td>
                                             <td>{{ $info->appointment->name }}</td>
                                             <td>{{ $info->governorate->name }}</td>
-                                            <td>{{ $info->hiring_date }}</td>
                                             <td>{{ $info->hiring_date }}</td>
                                             <td>{{ $info->createdByAdmin->name }}</td>
                                             <td>
