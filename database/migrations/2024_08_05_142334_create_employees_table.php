@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('email', 255)->unique()->nullable();
             $table->string('password', 255)->nullable();
             $table->string('mobile', 20)->unique();
+            $table->tinyInteger('gender')->default(1);
+            $table->string('address', 255);
             $table->date('hiring_date')->comment('بداية التعيين');
             $table->date('start_from')->nullable()->comment('بداية العمل بالاداره');
             $table->date('birth_date')->comment('تاريخ الميلاد');
