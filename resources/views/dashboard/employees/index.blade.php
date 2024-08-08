@@ -73,9 +73,10 @@
                                         <th class="wd-15p border-bottom-0"> رصيد الأجازات</th>
                                         <th class="wd-15p border-bottom-0"> الراحه الاسبوعيه</th>
                                         <th class="wd-15p border-bottom-0"> محافظة</th>
-                                        <th class="wd-10p border-bottom-0">الأضافة بواسطة</th>
                                         <th class="wd-25p border-bottom-0">تاريخ التعيين</th>
+                                        <th class="wd-10p border-bottom-0">الأضافة بواسطة</th>
                                         <th class="wd-25p border-bottom-0">التحديث بواسطة</th>
+                                        <th class="wd-25p border-bottom-0">الحالة</th>
                                         <th class="wd-25p border-bottom-0">العمليات</th>
                                     </tr>
                                 </thead>
@@ -113,6 +114,18 @@
                                                     {{ $info->updatedByAdmin->name }}
                                                 @else
                                                     <span class="text">لا يوجد</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($info->status == 1)
+                                                    <span class="label text-success">
+                                                        <div class="dot-label bg-success ml-1"></div>
+                                                        {{ __('مفعل') }}
+                                                    </span>
+                                                @elseif ($info->status == 2)
+                                                    <span class="label text-danger">
+                                                        <div class="dot-label bg-danger ml-1"></div>{{ __('غير مفعل') }}
+                                                    </span>
                                                 @endif
                                             </td>
                                             <td>
