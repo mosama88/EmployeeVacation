@@ -47,6 +47,7 @@
                         @csrf
                         <div class="col-12">
                             <div class="row">
+                                {{-- Name Input --}}
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_name">الأسم</label>
                                     <input type="text" name="name" id="employee_name" class="form-control"
@@ -55,6 +56,8 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+
+                                {{-- Mobile Input --}}
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_mobile">الموبايل</label>
                                     <input type="text" name="mobile"
@@ -65,7 +68,7 @@
                                     @enderror
                                 </div>
 
-                                {{-- Staies Address Input --}}
+                                {{-- Address Input --}}
                                 <div class="form-group mb-3 col-4">
                                     <label>عنوان الاقامة </label>
                                     <input type="text" name="address" id="employee_address" placeholder="العنوان"
@@ -75,6 +78,7 @@
                                     @enderror
                                 </div>
 
+                                {{-- Appointment Input --}}
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_appointment_id">الراحه الأسبوعية</label>
                                     <select multiple="multiple" name="appointment_id" id="employee_appointment_id"
@@ -89,6 +93,7 @@
                                     @enderror
                                 </div>
 
+                                {{-- Email Input --}}
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_email">البريد الالكترونى</label>
                                     <input type="email" name="email" id="employee_email" class="form-control"
@@ -97,6 +102,8 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+
+                                {{-- Password Input --}}
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_password">كلمة المرور</label>
                                     <input type="password" name="password" id="employee_password" class="form-control"
@@ -106,6 +113,7 @@
                                     @enderror
                                 </div>
 
+                                {{-- Birth Date Input --}}
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_birth_date">تاريخ الميلاد</label>
                                     <input type="date" name="birth_date" id="employee_birth_date" class="form-control"
@@ -115,6 +123,7 @@
                                     @enderror
                                 </div>
 
+                                {{-- Hiring Date Input --}}
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_hiring_date">تاريخ التعيين</label>
                                     <input type="date" name="hiring_date" id="employee_hiring_date"
@@ -124,7 +133,7 @@
                                     @enderror
                                 </div>
 
-
+                                {{-- Start From Input --}}
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_start_from">تاريخ التعيين بالأدارة | النيابة</label>
                                     <input type="date" name="start_from" id="employee_start_from"
@@ -134,6 +143,7 @@
                                     @enderror
                                 </div>
 
+                                {{-- Add Service Input --}}
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_add_service">أضافة سنوات الخدمه</label>
                                     <input type="text" name="add_service"
@@ -144,6 +154,7 @@
                                     @enderror
                                 </div>
 
+                                {{-- Years Service Input --}}
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_years_service">عدد سنوات الخدمه</label>
                                     <input type="text" name="years_service"
@@ -155,6 +166,7 @@
                                     @enderror
                                 </div>
 
+                                {{-- Num Vacation Days Input --}}
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_num_vacation_days">رصيد الأجازات</label>
                                     <input type="text" name="num_vacation_days"
@@ -166,6 +178,7 @@
                                     @enderror
                                 </div>
 
+                                {{-- Gender Input --}}
                                 <div class="form-group mb-3 col-4">
                                     <label> نوع الجنس</label> <span class="tx-danger">*</span>
                                     <select name="gender" id="employee_gender" class="form-control">
@@ -180,55 +193,72 @@
                                     @enderror
                                 </div>
 
+                                {{-- Governorate Input --}}
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_governorate_id">المحافظة التابع لها</label>
                                     <select name="governorate_id" id="employee_governorate_id" class="select2">
-                                        @foreach ($other['governorates'] as $info)
-                                            <option selected value="">-- أختر المحافظة --</option>
-                                            <option value="{{ $info->id }}">{{ $info->name }}</option>
-                                        @endforeach
-
+                                        @if (isset($other['governorates']) && !empty($other['governorates']))
+                                            @foreach ($other['governorates'] as $info)
+                                                <option selected value="">-- أختر المحافظة --</option>
+                                                <option value="{{ $info->id }}"
+                                                    {{ old('governorate_id') == $info->id ? 'selected' : '' }}>
+                                                    {{ $info->name }}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                     @error('governorate_id')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
 
+                                {{-- City Input --}}
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_city_id">المنطقه التابع لها</label>
                                     <select name="city_id" id="employee_city_id" class="select2">
-                                        @foreach ($other['cities'] as $info)
-                                            <option selected value="">-- أختر الدرجه المنطقه --</option>
-                                            <option value="{{ $info->id }}">{{ $info->name }}</option>
-                                        @endforeach
-
+                                        @if (isset($other['cities']) && !empty($other['cities']))
+                                            @foreach ($other['cities'] as $info)
+                                                <option selected value="">-- أختر الدرجه المنطقه --</option>
+                                                <option value="{{ $info->id }}"
+                                                    {{ old('city_id') == $info->id ? 'selected' : '' }}>
+                                                    {{ $info->name }}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                     @error('city_id')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
 
+                                {{-- Branch Input --}}
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_branche_id">النيابة التابع لها</label>
                                     <select name="branche_id" id="employee_branche_id" class="select2">
-                                        @foreach ($other['branches'] as $info)
-                                            <option selected value="">-- أختر النيابة --</option>
-                                            <option value="{{ $info->id }}">{{ $info->name }}</option>
-                                        @endforeach
-
+                                        @if (isset($other['branches']) && !empty($other['branches']))
+                                            @foreach ($other['branches'] as $info)
+                                                <option selected value="">-- أختر النيابة --</option>
+                                                <option value="{{ $info->id }}"
+                                                    {{ old('branche_id') == $info->id ? 'selected' : '' }}>
+                                                    {{ $info->name }}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                     @error('branche_id')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
 
+                                {{-- Job Category Input --}}
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_job_category_id">التخصص</label>
                                     <select name="job_category_id" id="employee_job_category_id" class="select2">
-                                        @foreach ($other['job_categories'] as $info)
-                                            <option selected value="">-- أختر التخصص --</option>
-                                            <option value="{{ $info->id }}">{{ $info->name }}</option>
-                                        @endforeach
+                                        @if (isset($other['job_categories']) && !empty($other['job_categories']))
+                                            @foreach ($other['job_categories'] as $info)
+                                                <option selected value="">-- أختر التخصص --</option>
+                                                <option value="{{ $info->id }}"
+                                                    {{ old('job_category_id') == $info->id ? 'selected' : '' }}>
+                                                    {{ $info->name }}</option>
+                                            @endforeach
+                                        @endif
 
                                     </select>
                                     @error('job_category_id')
@@ -236,13 +266,18 @@
                                     @enderror
                                 </div>
 
+                                {{-- Job Grade Input --}}
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_job_grade_id">الدرجه الوظيفية</label>
                                     <select name="job_grade_id" id="employee_job_grade_id" class="select2">
-                                        @foreach ($other['job_grades'] as $info)
-                                            <option selected value="">-- أختر الدرجه الوظيفية --</option>
-                                            <option value="{{ $info->id }}">{{ $info->name }}</option>
-                                        @endforeach
+                                        @if (isset($other['job_grades']) && !empty($other['job_grades']))
+                                            @foreach ($other['job_grades'] as $info)
+                                                <option selected value="">-- أختر الدرجه الوظيفية --</option>
+                                                <option value="{{ $info->id }}"
+                                                    {{ old('job_grade_id') == $info->id ? 'selected' : '' }}>
+                                                    {{ $info->name }}</option>
+                                            @endforeach
+                                        @endif
 
                                     </select>
                                     @error('job_grade_id')
@@ -250,6 +285,7 @@
                                     @enderror
                                 </div>
 
+                                {{-- Notes Input --}}
                                 <div class="form-group mb-3 col-6">
                                     <label for="employee_notes">ملاحظات</label>
                                     <textarea class="form-control" name="notes" id="employee_notes" placeholder="Textarea" rows="7">{{ old('notes') }}</textarea>
@@ -258,7 +294,7 @@
                                     @enderror
                                 </div>
 
-
+                                {{-- Photo Input --}}
                                 <div class="form-group mb-3 col-6">
                                     <label>الصورة الشخصية</label>
                                     <input type="file" name="photo" class="dropify" data-height="150" />

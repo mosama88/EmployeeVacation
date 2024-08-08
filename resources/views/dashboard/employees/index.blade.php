@@ -120,14 +120,13 @@
                                             <td>
                                                 {{-- Show --}}
                                                 <a class="modal-effect btn btn-outline-info btn-sm"
-                                                    data-effect="effect-scale" data-toggle="modal"
-                                                    href="#show{{ $info->id }}"><i
-                                                        class="fas fa-edit ml-1"></i>تعديل</a>
+                                                    href="{{ route('dashboard.employees.show', $info->id) }}"><i
+                                                        class="fas fa-edit ml-1"></i>عرض
+                                                    البيانات</a>
 
                                                 {{-- Edit --}}
                                                 <a class="modal-effect btn btn-outline-info btn-sm"
-                                                    data-effect="effect-scale" data-toggle="modal"
-                                                    href="#edit{{ $info->id }}"><i
+                                                    href="{{ route('dashboard.employees.edit', $info->id) }}"><i
                                                         class="fas fa-edit ml-1"></i>تعديل</a>
 
                                                 {{-- Delete --}}
@@ -135,9 +134,7 @@
                                                     data-effect="effect-scale" data-toggle="modal"
                                                     href="#delete{{ $info->id }}">
                                                     <i class="fas fa-trash-alt ml-1"></i>حذف</a>
-
                                             </td>
-                                            @include('dashboard.employees.edit')
                                         </tr>
                                         @include('dashboard.employees.delete')
                                     @endforeach
