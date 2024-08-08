@@ -83,10 +83,14 @@
                                     <label for="employee_appointment_id">الراحه الأسبوعية</label>
                                     <select multiple="multiple" name="appointment_id" id="employee_appointment_id"
                                         class="testselect2">
-                                        <option selected value="volvo">Volvo</option>
-                                        <option value="saab">Saab</option>
-                                        <option value="mercedes">Mercedes</option>
-                                        <option value="audi">Audi</option>
+                                        <option disabled>-- أختر الراحه --</option>
+                                        @if (isset($other['appointments']) && !empty($other['appointments']))
+                                            @foreach ($other['appointments'] as $info)
+                                                <option value="{{ $info->id }}"
+                                                    {{ old('appointment_id') == $info->id ? 'selected' : '' }}>
+                                                    {{ $info->name }}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                     @error('appointment_id')
                                         <span class="text-danger">{{ $message }}</span>
@@ -126,8 +130,8 @@
                                 {{-- Hiring Date Input --}}
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_hiring_date">تاريخ التعيين</label>
-                                    <input type="date" name="hiring_date" id="employee_hiring_date"
-                                        class="form-control" value="{{ old('hiring_date') }}">
+                                    <input type="date" name="hiring_date" id="employee_hiring_date" class="form-control"
+                                        value="{{ old('hiring_date') }}">
                                     @error('hiring_date')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -197,9 +201,9 @@
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_governorate_id">المحافظة التابع لها</label>
                                     <select name="governorate_id" id="employee_governorate_id" class="select2">
+                                        <option selected value="">-- أختر المحافظة --</option>
                                         @if (isset($other['governorates']) && !empty($other['governorates']))
                                             @foreach ($other['governorates'] as $info)
-                                                <option selected value="">-- أختر المحافظة --</option>
                                                 <option value="{{ $info->id }}"
                                                     {{ old('governorate_id') == $info->id ? 'selected' : '' }}>
                                                     {{ $info->name }}</option>
@@ -215,9 +219,9 @@
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_city_id">المنطقه التابع لها</label>
                                     <select name="city_id" id="employee_city_id" class="select2">
+                                        <option selected value="">-- أختر الدرجه المنطقه --</option>
                                         @if (isset($other['cities']) && !empty($other['cities']))
                                             @foreach ($other['cities'] as $info)
-                                                <option selected value="">-- أختر الدرجه المنطقه --</option>
                                                 <option value="{{ $info->id }}"
                                                     {{ old('city_id') == $info->id ? 'selected' : '' }}>
                                                     {{ $info->name }}</option>
@@ -233,9 +237,9 @@
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_branche_id">النيابة التابع لها</label>
                                     <select name="branche_id" id="employee_branche_id" class="select2">
+                                        <option selected value="">-- أختر النيابة --</option>
                                         @if (isset($other['branches']) && !empty($other['branches']))
                                             @foreach ($other['branches'] as $info)
-                                                <option selected value="">-- أختر النيابة --</option>
                                                 <option value="{{ $info->id }}"
                                                     {{ old('branche_id') == $info->id ? 'selected' : '' }}>
                                                     {{ $info->name }}</option>
@@ -251,9 +255,9 @@
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_job_category_id">التخصص</label>
                                     <select name="job_category_id" id="employee_job_category_id" class="select2">
+                                        <option selected value="">-- أختر التخصص --</option>
                                         @if (isset($other['job_categories']) && !empty($other['job_categories']))
                                             @foreach ($other['job_categories'] as $info)
-                                                <option selected value="">-- أختر التخصص --</option>
                                                 <option value="{{ $info->id }}"
                                                     {{ old('job_category_id') == $info->id ? 'selected' : '' }}>
                                                     {{ $info->name }}</option>
@@ -270,9 +274,9 @@
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_job_grade_id">الدرجه الوظيفية</label>
                                     <select name="job_grade_id" id="employee_job_grade_id" class="select2">
+                                        <option selected value="">-- أختر الدرجه الوظيفية --</option>
                                         @if (isset($other['job_grades']) && !empty($other['job_grades']))
                                             @foreach ($other['job_grades'] as $info)
-                                                <option selected value="">-- أختر الدرجه الوظيفية --</option>
                                                 <option value="{{ $info->id }}"
                                                     {{ old('job_grade_id') == $info->id ? 'selected' : '' }}>
                                                     {{ $info->name }}</option>

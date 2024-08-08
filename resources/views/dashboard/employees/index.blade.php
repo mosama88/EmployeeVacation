@@ -85,7 +85,6 @@
                                         <tr>
                                             <td>{{ $i }}</td>
                                             <td>
-                                            <td>
                                                 @if ($info->image)
                                                     <img class="img-thumbnail rounded me-2" alt="200x200"
                                                         style="width: 80px; height:50px"
@@ -119,7 +118,7 @@
                                             </td>
                                             <td>
                                                 {{-- Show --}}
-                                                <a class="modal-effect btn btn-outline-info btn-sm"
+                                                <a class="modal-effect btn btn-outline-primary btn-sm"
                                                     href="{{ route('dashboard.employees.show', $info->id) }}"><i
                                                         class="fas fa-edit ml-1"></i>عرض
                                                     البيانات</a>
