@@ -61,10 +61,4 @@ class Employee extends Model
     {
         return $this->belongsTo(jobGrade::class, 'job_grade_id');
     }
-
-    public function shiftsType()
-    {
-        return $this->belongsTo(ShiftsType::class, 'shifts_type_id');
-    }
-    
 }
