@@ -2,8 +2,15 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Controller;
+use App\Models\City;
+use App\Models\Branch;
+use App\Models\Employee;
+use App\Models\JobGrade;
+use App\Models\Appointment;
+use App\Models\Governorate;
+use App\Models\jobCategory;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class EmployeeController extends Controller
 {
@@ -12,7 +19,8 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        //
+        $data = Employee::select("*")->orderBy('id', 'DESC')->get();
+        return view('dashboard.employees.index', compact('data'));
     }
 
     /**
@@ -20,7 +28,13 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        //
+        $other['appointments'] = Appointment::get();
+        $other['governorates'] = Governorate::get();
+        $other['cities'] = City::get();
+        $other['branches'] = Branch::get();
+        $other['job_categories'] = jobCategory::get();
+        $other['job_grades'] = JobGrade::get();
+        return view('dashboard.employees.create', compact('other'));
     }
 
     /**
@@ -44,7 +58,13 @@ class EmployeeController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $other['appointments'] = Appointment::get();
+        $other['governorates'] = Governorate::get();
+        $other['cities'] = City::get();
+        $other['branches'] = Branch::get();
+        $other['job_categories'] = jobCategory::get();
+        $other['job_grades'] = JobGrade::get();
+        return view('dashboard.employees.edit', compact('other'));
     }
 
     /**

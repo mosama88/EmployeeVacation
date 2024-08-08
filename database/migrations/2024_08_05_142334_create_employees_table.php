@@ -29,6 +29,7 @@ return new class extends Migration
             $table->foreignId('branche_id')->references('id')->on('branches')->onUpdate('cascade');
             $table->foreignId('job_category_id')->references('id')->on('job_categories')->onUpdate('cascade');
             $table->foreignId('job_grade_id')->references('id')->on('job_grades')->onUpdate('cascade');
+            $table->tinyInteger('status')->default(1)->comment('واحد نشط غير نشط أثنين');
             $table->text('notes')->nullable();
             $table->foreignId('created_by')->references('id')->on('admins')->onUpdate('cascade');
             $table->foreignId('updated_by')->nullable()->references('id')->on('admins')->onUpdate('cascade');

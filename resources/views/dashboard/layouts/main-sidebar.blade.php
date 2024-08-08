@@ -94,9 +94,9 @@
                 <span class="side-menu__label">شئون الموظفين</span><i
                         class="angle fe fe-chevron-down"></i></a>
                 <ul class="slide-menu">
-                    <li><a class="slide-item" href="{{ route('dashboard.cities.index') }}">الموظفين</a></li>
-                    <li><a class="slide-item" href="{{ route('dashboard.holidays.index') }}">تقارير</a></li>
-              
+                    <li><a class="slide-item" href="{{ route('dashboard.employees.index') }}">الموظفين</a></li>
+                    <li><a class="slide-item" href="">تقارير</a></li>
+
                 </ul>
             </li>
 

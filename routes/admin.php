@@ -6,6 +6,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Dashboard\CityController;
 use App\Http\Controllers\Dashboard\BranchController;
+use App\Http\Controllers\Dashboard\EmployeeController;
 use App\Http\Controllers\Dashboard\HolidayController;
 use App\Http\Controllers\Dashboard\JobGradeController;
 use App\Http\Controllers\Dashboard\JobCategoryController;
@@ -45,7 +46,7 @@ Route::middleware(['auth:admin', 'verified'])->name('dashboard.')->group(functio
     Route::put('/financeCalendars/editISOpen/{id}', [FinanceCalendarController::class, 'editISOpen'])->name('financeCalendars.editISOpen');
 
 
-    
+
     // بداية cities
     Route::resource('/cities', CityController::class);
     Route::post('/check-city-name', [CityController::class, 'checkCityName'])->name('cities.checkName');
@@ -68,6 +69,9 @@ Route::middleware(['auth:admin', 'verified'])->name('dashboard.')->group(functio
     // بداية branches
     Route::resource('/jobCategories', JobCategoryController::class);
     Route::post('/check-jobCategories-name', [JobCategoryController::class, 'checkjobCategoryName'])->name('jobCategories.checkName');
+
+    // بداية Employees
+    Route::resource('/employees', EmployeeController::class);
 });
 
 
