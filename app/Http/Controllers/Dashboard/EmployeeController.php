@@ -102,21 +102,70 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
+        $info = Employee::findOrFail($id);
         $other['appointments'] = Appointment::get();
         $other['governorates'] = Governorate::get();
         $other['cities'] = City::get();
         $other['branches'] = Branch::get();
         $other['job_categories'] = jobCategory::get();
         $other['job_grades'] = JobGrade::get();
-        return view('dashboard.employees.edit', compact('other'));
+        return view('dashboard.employees.edit', compact('other', 'info'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $employee = Employee::findOrFail($request->id);
+        try {
+            $checkExists = Employee::select("*")->where('name', $request->name)->first();
+            if (!empty($checkExists)) {
+                return response()->json(['error' => 'عفوآ أسم الموظف موجودة من قبل !'], 422);
+            }
+            DB::beginTransaction();
+            $dataToUpdate = new Employee();
+            $dataToUpdate['name'] = $request->name;
+            $dataToUpdate['username'] = $request->username;
+            $dataToUpdate['password'] = $request->password;
+            $dataToUpdate['mobile'] = $request->mobile;
+            $dataToUpdate['address'] = $request->address;
+            $dataToUpdate['gender'] = $request->gender;
+            $dataToUpdate['hiring_date'] = $request->hiring_date;
+            $dataToUpdate['start_from'] = $request->start_from;
+            $dataToUpdate['birth_date'] = $request->birth_date;
+            $dataToUpdate['num_vacation_days'] = $request->num_vacation_days;
+            $dataToUpdate['add_service'] = $request->add_service;
+            $dataToUpdate['years_service'] = $request->years_service;
+            $dataToUpdate['appointment_id'] = $request->appointment_id;
+            $dataToUpdate['governorate_id'] = $request->governorate_id;
+            $dataToUpdate['city_id'] = $request->city_id;
+            $dataToUpdate['branche_id'] = $request->branche_id;
+            $dataToUpdate['job_category_id'] = $request->job_category_id;
+            $dataToUpdate['job_grade_id'] = $request->job_grade_id;
+            $dataToUpdate['notes'] = $request->notes;
+            $dataToUpdate['status'] = $request->status;
+            $dataToUpdate['updated_by'] = auth()->user()->id;
+
+            $employee->update($dataToUpdate);
+
+            // update photo
+            if ($request->has('photo')) {
+                // Delete old photo
+                if ($employee->image) {
+                    $old_img = $employee->image->filename;
+                    $this->Delete_attachment('upload_image', 'employees/' . $old_img, $request->id);
+                }
+                //Upload img
+                $this->verifyAndStoreImage($request, 'photo', 'employees', 'upload_image', $request->id, 'App\Models\employee');
+            }
+
+            DB::commit();
+            return response()->json(['success' => 'تم أضافة بيانات الموظف بنجاح']);
+        } catch (\Exception $ex) {
+            DB::rollBack();
+            return response()->json(['error' => 'عفوا  حدث خطأ  ' . $ex->getMessage()], 500);
+        }
     }
 
     /**
@@ -149,6 +198,4 @@ class EmployeeController extends Controller
         session()->flash('error', 'خطأ في عملية الحذف');
         return back();
     }
-
-
 }

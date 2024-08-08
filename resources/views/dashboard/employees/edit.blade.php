@@ -54,7 +54,7 @@
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_name">الأسم</label> <span class="tx-danger">*</span>
                                     <input type="text" name="name" id="employee_name" class="form-control"
-                                        placeholder="الأسم" value="{{ old('name') }}">
+                                        placeholder="الأسم" value="{{ old('name', $info->name) }}">
                                     @error('name')
                                         <div class="alert alert-danger mb-0 mt-1" role="alert">
                                             <span class="alert-inner--icon"><i class="fe fe-slash"></i></span>
@@ -68,7 +68,7 @@
                                     <label for="employee_mobile">الموبايل</label> <span class="tx-danger">*</span>
                                     <input type="text" name="mobile"
                                         oninput="this.value=this.value.replace(/[^0-9.]/g,'');" id="employee_mobile"
-                                        class="form-control" placeholder="الموبايل" value="{{ old('mobile') }}">
+                                        class="form-control" placeholder="الموبايل" value="{{ old('mobile', $info->mobile) }}">
                                     @error('mobile')
                                         <div class="alert alert-danger mb-0 mt-1" role="alert">
                                             <span class="alert-inner--icon"><i class="fe fe-slash"></i></span>
@@ -81,7 +81,7 @@
                                 <div class="form-group mb-3 col-4">
                                     <label>عنوان الاقامة </label> <span class="tx-danger">*</span>
                                     <input type="text" name="address" id="employee_address" placeholder="العنوان"
-                                        class="form-control" value="{{ old('address') }}">
+                                        class="form-control" value="{{ old('address', $info->address) }}">
                                     @error('address')
                                         <div class="alert alert-danger mb-0 mt-1" role="alert">
                                             <span class="alert-inner--icon"><i class="fe fe-slash"></i></span>
@@ -117,7 +117,7 @@
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_username">أسم المستخدم</label>
                                     <input type="text" name="username" autocomplete="off" id="employee_username"
-                                        class="form-control" placeholder="أسم المستخدم" value="{{ old('username') }}">
+                                        class="form-control" placeholder="أسم المستخدم" value="{{ old('username', $info->username) }}">
                                     @error('username')
                                         <div class="alert alert-danger mb-0 mt-1" role="alert">
                                             <span class="alert-inner--icon"><i class="fe fe-slash"></i></span>
@@ -130,7 +130,7 @@
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_password">كلمة المرور</label>
                                     <input type="password" name="password" autocomplete="off" id="employee_password"
-                                        class="form-control" placeholder="كلمة المرور" value="{{ old('password') }}">
+                                        class="form-control" placeholder="كلمة المرور" value="{{ old('password' , $info->password) }}">
                                     @error('password')
                                         <div class="alert alert-danger mb-0 mt-1" role="alert">
                                             <span class="alert-inner--icon"><i class="fe fe-slash"></i></span>
@@ -144,7 +144,7 @@
                                     <label for="employee_birth_date">تاريخ الميلاد</label> <span
                                         class="tx-danger">*</span>
                                     <input type="date" name="birth_date" id="employee_birth_date"
-                                        class="form-control" value="{{ old('birth_date') }}">
+                                        class="form-control" value="{{ old('birth_date', $info->birth_date) }}">
                                     @error('birth_date')
                                         <div class="alert alert-danger mb-0 mt-1" role="alert">
                                             <span class="alert-inner--icon"><i class="fe fe-slash"></i></span>
@@ -158,7 +158,7 @@
                                     <label for="employee_hiring_date">تاريخ التعيين</label> <span
                                         class="tx-danger">*</span>
                                     <input type="date" name="hiring_date" id="employee_hiring_date"
-                                        class="form-control" value="{{ old('hiring_date') }}">
+                                        class="form-control" value="{{ old('hiring_date', $info->hiring_date) }}">
                                     @error('hiring_date')
                                         <div class="alert alert-danger mb-0 mt-1" role="alert">
                                             <span class="alert-inner--icon"><i class="fe fe-slash"></i></span>
@@ -171,7 +171,7 @@
                                 <div class="form-group mb-3 col-4">
                                     <label for="employee_start_from">تاريخ التعيين بالأدارة | النيابة</label>
                                     <input type="date" name="start_from" id="employee_start_from"
-                                        class="form-control" value="{{ old('start_from') }}">
+                                        class="form-control" value="{{ old('start_from', $info->start_from) }}">
                                     @error('start_from')
                                         <div class="alert alert-danger mb-0 mt-1" role="alert">
                                             <span class="alert-inner--icon"><i class="fe fe-slash"></i></span>
@@ -185,7 +185,7 @@
                                     <label for="employee_add_service">أضافة سنوات الخدمه</label>
                                     <input type="text" name="add_service"
                                         oninput="this.value=this.value.replace(/[^0-9.]/g,'');" id="employee_add_service"
-                                        class="form-control" value="{{ old('add_service') }}">
+                                        class="form-control" value="{{ old('add_service', $info->add_service) }}">
                                     @error('add_service')
                                         <div class="alert alert-danger mb-0 mt-1" role="alert">
                                             <span class="alert-inner--icon"><i class="fe fe-slash"></i></span>
@@ -201,7 +201,7 @@
                                     <input type="text" name="years_service"
                                         oninput="this.value=this.value.replace(/[^0-9.]/g,'');"
                                         id="employee_years_service" class="form-control"
-                                        value="{{ old('years_service') }}">
+                                        value="{{ old('years_service', $info->years_service) }}">
                                     @error('years_service')
                                         <div class="alert alert-danger mb-0 mt-1" role="alert">
                                             <span class="alert-inner--icon"><i class="fe fe-slash"></i></span>
@@ -217,7 +217,7 @@
                                     <input type="text" name="num_vacation_days"
                                         oninput="this.value=this.value.replace(/[^0-9.]/g,'');"
                                         id="employee_num_vacation_days" class="form-control"
-                                        value="{{ old('num_vacation_days') }}">
+                                        value="{{ old('num_vacation_days', $info->num_vacation_days) }}">
                                     @error('num_vacation_days')
                                         <div class="alert alert-danger mb-0 mt-1" role="alert">
                                             <span class="alert-inner--icon"><i class="fe fe-slash"></i></span>
@@ -231,9 +231,9 @@
                                     <label> نوع الجنس</label> <span class="tx-danger">*</span>
                                     <select name="gender" id="employee_gender" class="form-control">
                                         <option value="" selected>-- أختر النوع --</option>
-                                        <option @if (old('gender') == 1) selected @endif value="1">ذكر
+                                        <option @if (old('gender', $info->gender) == 1) selected @endif value="1">ذكر
                                         </option>
-                                        <option @if (old('gender') == 2) selected @endif value="2">انثي
+                                        <option @if (old('gender', $info->gender) == 2) selected @endif value="2">انثي
                                         </option>
                                     </select>
                                     @error('gender')
