@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="{{ URL::asset('dashboard/assets/plugins/telephoneinput/telephoneinput-rtl.css') }}">
 @endsection
 @section('page-header')
+    @include('dashboard.messages_alert')
+
     <!-- breadcrumb -->
     <div class="breadcrumb-header justify-content-between">
         <div class="my-auto">
@@ -43,9 +45,15 @@
                     <p class="mb-2"></p>
                 </div>
                 <div class="card-body pt-0">
-                    <form method="POST" action="{{ route('dashboard.employees.store') }}" enctype="multipart/form-data"
-                        autocomplete="off">
+                    <form id="employeeForm" method="POST" action="{{ route('dashboard.employees.store') }}"
+                        enctype="multipart/form-data" autocomplete="off">
                         @csrf
+
+                        {{-- Success Message --}}
+                        <div id="successMessage" class="alert alert-success d-none" role="alert">
+                            تم أضافة بيانات الموظف بنجاح <a href="{{ route('dashboard.employees.index') }}"
+                                class="alert-link">أضغط هنا لمشاهدة الأضافة</a>
+                        </div>
                         <div class="col-12">
                             <div class="row">
                                 {{-- Name Input --}}
@@ -77,7 +85,7 @@
 
                                 {{-- Address Input --}}
                                 <div class="form-group mb-3 col-4">
-                                    <label>عنوان الاقامة </label> <span class="tx-danger">*</span>
+                                    <label>عنوان الاقامة </label>
                                     <input type="text" name="address" id="employee_address" placeholder="العنوان"
                                         class="form-control" value="{{ old('address') }}">
                                     @error('address')
@@ -138,7 +146,7 @@
                                 </div>
 
                                 {{-- Birth Date Input --}}
-                                <div class="form-group mb-3 col-4">
+                                <div class="form-group mb-3 col-4" id="employee_birth_date_input">
                                     <label for="employee_birth_date">تاريخ الميلاد</label> <span
                                         class="tx-danger">*</span>
                                     <input type="date" name="birth_date" id="employee_birth_date"
@@ -152,7 +160,7 @@
                                 </div>
 
                                 {{-- Hiring Date Input --}}
-                                <div class="form-group mb-3 col-4">
+                                <div class="form-group mb-3 col-4" id="employee_hiring_date_input">
                                     <label for="employee_hiring_date">تاريخ التعيين</label> <span
                                         class="tx-danger">*</span>
                                     <input type="date" name="hiring_date" id="employee_hiring_date"
@@ -179,7 +187,7 @@
                                 </div>
 
                                 {{-- Add Service Input --}}
-                                <div class="form-group mb-3 col-4">
+                                <div class="form-group mb-3 col-4" id="employee_add_service_input">
                                     <label for="employee_add_service">أضافة سنوات الخدمه</label>
                                     <input type="text" name="add_service"
                                         oninput="this.value=this.value.replace(/[^0-9.]/g,'');" id="employee_add_service"
@@ -193,7 +201,7 @@
                                 </div>
 
                                 {{-- Years Service Input --}}
-                                <div class="form-group mb-3 col-4">
+                                <div class="form-group mb-3 col-4" id="employee_years_service_input">
                                     <label for="employee_years_service">عدد سنوات الخدمه</label> <span
                                         class="tx-danger">*</span>
                                     <input type="text" name="years_service"
@@ -209,7 +217,7 @@
                                 </div>
 
                                 {{-- Num Vacation Days Input --}}
-                                <div class="form-group mb-3 col-4">
+                                <div class="form-group mb-3 col-4" id="employee_num_vacation_days_input">
                                     <label for="employee_num_vacation_days">رصيد الأجازات</label> <span
                                         class="tx-danger">*</span>
                                     <input type="text" name="num_vacation_days"
@@ -411,4 +419,51 @@
     <!-- Internal TelephoneInput js-->
     <script src="{{ URL::asset('dashboard/assets/plugins/telephoneinput/telephoneinput.js') }}"></script>
     <script src="{{ URL::asset('dashboard/assets/plugins/telephoneinput/inttelephoneinput.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#employeeForm').on('submit', function(e) {
+                e.preventDefault();
+
+                let formData = new FormData(this);
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        // Handle success response
+                        $('#employeeForm')[0].reset(); // Optionally, reset the form fields
+                        $('#output').attr('src', '')
+                            .hide(); // Clear the selected image preview and hide it
+                        $('#successMessage').removeClass('d-none'); // Show success message
+
+                        // Slowly fade out the success message after 5 seconds
+                        setTimeout(function() {
+                            $('#successMessage').fadeOut('slow', function() {
+                                window.location.href = "/employees";
+                            });
+                        }, 2000); // 2000 milliseconds = 2 seconds
+                    },
+                    error: function(xhr) {
+                        // Clear previous error messages
+                        $('.alert-danger').remove();
+
+                        // Loop through the errors and display them
+                        $.each(xhr.responseJSON.errors, function(key, value) {
+                            let inputField = $(`[name="${key}"]`);
+                            inputField.after(`
+                                <div class="alert alert-danger mb-0 mt-1" role="alert">
+                                    <span class="alert-inner--icon"><i class="fe fe-slash"></i></span>
+                                    <span class="alert-inner--text"><strong>خطأ!</strong> ${value[0]}</span>
+                                </div>
+                            `);
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+
 @endsection

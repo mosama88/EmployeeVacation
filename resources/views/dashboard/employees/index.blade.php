@@ -91,7 +91,7 @@
                                                         style="width: 80px; height:50px"
                                                         src="{{ asset('dashboard/assets/images/uploads/employees/' . $info->image->filename) }}"
                                                         data-holder-rendered="true">
-                                                @elseif ($info->gender == 'Male')
+                                                @elseif ($info->gender == 1)
                                                     <img alt="Responsive image" class="img-thumbnail rounded me-2"
                                                         alt="200x200" style="width: 80px; height:50px"
                                                         src="{{ asset('dashboard/assets/img/employees-default.png') }}">

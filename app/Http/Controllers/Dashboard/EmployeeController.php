@@ -51,7 +51,7 @@ class EmployeeController extends Controller
         try {
             $checkExists = Employee::select("*")->where('name', $request->name)->first();
             if (!empty($checkExists)) {
-                return redirect()->back()->with(['error' => 'عفوآ أسم العطلة موجودة من قبل !']);
+                return response()->json(['error' => 'عفوآ أسم الموظف موجودة من قبل !'], 422);
             }
             DB::beginTransaction();
             $dataToInsert = new Employee();
@@ -59,6 +59,8 @@ class EmployeeController extends Controller
             $dataToInsert['username'] = $request->username;
             $dataToInsert['password'] = $request->password;
             $dataToInsert['mobile'] = $request->mobile;
+            $dataToInsert['address'] = $request->address;
+            $dataToInsert['gender'] = $request->gender;
             $dataToInsert['hiring_date'] = $request->hiring_date;
             $dataToInsert['start_from'] = $request->start_from;
             $dataToInsert['birth_date'] = $request->birth_date;
@@ -80,10 +82,10 @@ class EmployeeController extends Controller
             $this->verifyAndStoreImage($request, 'photo', 'employees/', 'upload_image', $dataToInsert->id, 'App\Models\Employee');
 
             DB::commit();
-            return redirect()->route('dashboard.employees.index')->with('success', 'تم الموظف العطلة بنجاح');
+            return response()->json(['success' => 'تم أضافة بيانات الموظف بنجاح']);
         } catch (\Exception $ex) {
             DB::rollBack();
-            return redirect()->back()->with(['error' => 'عفوا  حدث خطأ  ' . $ex->getMessage()])->withInput();
+            return response()->json(['error' => 'عفوا  حدث خطأ  ' . $ex->getMessage()], 500);
         }
     }
 
@@ -120,8 +122,33 @@ class EmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $data = Employee::select("*")->where('id', $id)->first();
+
+
+        // معالجة الحذف الفردي
+        if ($request->page_id == 1) {
+            // التحقق من وجود صورة
+            if ($data->image) {
+                $filename = $data->image->filename;
+                $path = 'employees/' . $filename;
+
+                // حذف الصورة
+                $this->Delete_attachment('upload_image', $path, $data->image->id);
+            }
+
+            // حذف الموظف
+            Employee::destroy($id);
+
+            session()->flash('success', 'تم حذف الموظف بنجاح');
+            return back();
+        }
+
+        // العودة مع رسالة خطأ إذا لم يكن $request->page_id يساوي 1
+        session()->flash('error', 'خطأ في عملية الحذف');
+        return back();
     }
+
+
 }

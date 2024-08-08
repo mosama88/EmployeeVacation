@@ -12,15 +12,18 @@
                 <form action="{{ route('dashboard.employees.destroy', $info->id) }}" method="POST">
                     {{ method_field('delete') }}
                     {{ csrf_field() }}
-                    <div class="modal-body">
-                        <input type="hidden" name="id" value="{{ $info->id }}">
-                        <h5>أسم الموظف</h5>
-                        <h5 class="text-primary">{{ $info->name }}</h5>
-                    </div>
-                    <div class="modal-footer mx-auto">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
-                        <button type="submit" class="btn btn-danger">تأكيد الحذف</button>
-                    </div>
+
+                    <div class="form-group">
+                        <input type="hidden" name="page_id" value="1" class="form-control" id="recipient-name">
+                        <div class="modal-body">
+                            <input type="hidden" name="id" value="{{ $info->id }}">
+                            <h5>أسم الموظف</h5>
+                            <h5 class="text-primary">{{ $info->name }}</h5>
+                        </div>
+                        <div class="modal-footer mx-auto">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
+                            <button type="submit" class="btn btn-danger">تأكيد الحذف</button>
+                        </div>
                 </form>
             </div>
         </div>
